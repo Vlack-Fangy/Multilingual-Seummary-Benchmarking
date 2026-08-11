@@ -197,6 +197,48 @@ zero self-preference bias. Any Qwen or Llama judge would be scoring its own fami
   Mistral-Small backbone to a model already on disk, isolating the effect of Indic post-training.
   Pull this one model, or drop it?
 
+## 6b. Inference pipeline — DONE (iteration 2)
+
+**One environment serves everything.** vLLM PR #33942 (native Sarvam MoE support) merged
+2026-03-07 and is in every release from 0.17.1. Running **vLLM 0.27.0 / torch 2.13 / py3.12**
+(conda env `msb`), `SarvamMoEForCausalLM`, `Qwen3_5ForConditionalGeneration` and
+`Mistral3ForConditionalGeneration` are all natively registered — no hotpatch, no vendor fork,
+no second env for the 0.15.0 pin.
+
+Verified on GPU 4: **Sarvam loads at 62.2 GB** with the explicit `dtype="bfloat16"` cast
+(fp32 would have been 128.6 GB and OOM'd), 27s load, and generates clean Devanagari.
+
+### Three traps that would have silently corrupted the main run
+
+1. **Sarvam reasons by default and ignores its own `<|nothink|>` marker.** With
+   `enable_thinking=False` correctly rendered — token id 28 verified present in the prompt — it
+   still emitted English `<think>` traces and hit the token cap on **20/20** items, producing zero
+   summaries. Fixed by prefilling the assistant turn with a closed `<think></think>` block, which
+   is the template's own convention for a non-reasoning turn. Left undetected, the flagship model
+   of this study would have produced 1800 empty cells.
+2. **vLLM's `chat_template_kwargs` never reached the template.** It is a valid parameter on
+   `LLM.chat()` and silently had no effect. We now render the chat template ourselves and pass
+   **token ids** rather than a string — control tokens only work if they carry their special-token
+   id, and re-tokenizing a rendered string turns them into literal characters.
+3. **The script classifier counted URLs as script evidence.** A legitimate Devanagari summary
+   containing `www.bbc.co.uk/hindi/...` classified as "mixed". Since script compliance is the
+   measured result in iteration 4, URLs/emails/handles are now stripped before profiling.
+
+### The character cap works
+
+Same character budget, deliberately different token ceilings:
+
+| Model | max_tokens (hi) | median output chars |
+|---|---|---|
+| `sarvam-30b` | 177 | 178 |
+| `Llama-3.1-8B-Instruct` | 312 | 141 |
+| *reference* | — | *134* |
+
+A 1.8× difference in token allowance yields comparable character output, and neither model hit
+the cap (`finish_reason=stop` throughout). The cap is a runaway guard, not a binding constraint —
+which is the whole point, since a uniform `max_tokens` would have handed Sarvam ~4x the effective
+output length of Llama on Telugu and manufactured the result.
+
 ## 7. Reproducing
 
 ```bash
