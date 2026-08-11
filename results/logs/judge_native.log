@@ -1,0 +1,26 @@
+judging 18000 rows with gpt-oss-120b (reasoning=medium)
+GPU: 122GiB free of 140GiB -> gpu_memory_utilization=0.78
+WARNING 08-11 19:36:35 [system_utils.py:157] We must use the `spawn` multiprocessing start method. Overriding VLLM_WORKER_MULTIPROC_METHOD to 'spawn'. See https://docs.vllm.ai/en/latest/usage/troubleshooting.html#python-multiprocessing for more information. Reasons: CUDA is initialized
+(EngineCore pid=372891) Loading safetensors checkpoint shards:   0% Completed | 0/15 [00:00<?, ?it/s]
+(EngineCore pid=372891) Loading safetensors checkpoint shards:   7% Completed | 1/15 [00:00<00:04,  2.96it/s]
+(EngineCore pid=372891) Loading safetensors checkpoint shards:  13% Completed | 2/15 [00:00<00:04,  3.07it/s]
+(EngineCore pid=372891) Loading safetensors checkpoint shards:  20% Completed | 3/15 [00:01<00:04,  2.94it/s]
+(EngineCore pid=372891) Loading safetensors checkpoint shards:  27% Completed | 4/15 [00:01<00:03,  2.97it/s]
+(EngineCore pid=372891) Loading safetensors checkpoint shards:  33% Completed | 5/15 [00:01<00:03,  2.87it/s]
+(EngineCore pid=372891) Loading safetensors checkpoint shards:  40% Completed | 6/15 [00:02<00:03,  2.91it/s]
+(EngineCore pid=372891) Loading safetensors checkpoint shards:  47% Completed | 7/15 [00:02<00:02,  2.86it/s]
+(EngineCore pid=372891) Loading safetensors checkpoint shards:  53% Completed | 8/15 [00:02<00:02,  2.88it/s]
+(EngineCore pid=372891) Loading safetensors checkpoint shards:  60% Completed | 9/15 [00:03<00:02,  2.82it/s]
+(EngineCore pid=372891) Loading safetensors checkpoint shards:  67% Completed | 10/15 [00:03<00:01,  2.84it/s]
+(EngineCore pid=372891) Loading safetensors checkpoint shards:  73% Completed | 11/15 [00:03<00:01,  2.79it/s]
+(EngineCore pid=372891) Loading safetensors checkpoint shards:  80% Completed | 12/15 [00:04<00:01,  2.85it/s]
+(EngineCore pid=372891) Loading safetensors checkpoint shards:  87% Completed | 13/15 [00:04<00:00,  2.91it/s]
+(EngineCore pid=372891) Loading safetensors checkpoint shards:  93% Completed | 14/15 [00:04<00:00,  2.84it/s]
+(EngineCore pid=372891) Loading safetensors checkpoint shards: 100% Completed | 15/15 [00:05<00:00,  2.84it/s]
+(EngineCore pid=372891) Loading safetensors checkpoint shards: 100% Completed | 15/15 [00:05<00:00,  2.87it/s]
+(EngineCore pid=372891) 
+(EngineCore pid=372891) 2026-08-11 19:36:56,265 - INFO - autotuner.py:2397 - flashinfer.jit: [Autotuner]: Loaded 0 configs from /home/harshal/.cache/vllm/flashinfer_autotune_cache/0.6.16.post3/90a/f585f8822bd28b397a47d6179f09b94d56dce66cdae43733bfb21060caca1a5f/autotune_configs.json
+(EngineCore pid=372891) 2026-08-11 19:36:56,265 - INFO - autotuner.py:829 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+(EngineCore pid=372891) 2026-08-11 19:36:56,345 - INFO - autotuner.py:852 - flashinfer.jit: [Autotuner]: Autotuning process ends
+(EngineCore pid=372891) 2026-08-11 19:36:56,350 - INFO - autotuner.py:2269 - flashinfer.jit: [Autotuner]: Saved 0 configs to /home/harshal/.cache/vllm/flashinfer_autotune_cache/0.6.16.post3/90a/f585f8822bd28b397a47d6179f09b94d56dce66cdae43733bfb21060caca1a5f/autotune_configs.json (0 new, 0 from previous config)
+(EngineCore pid=372891) Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   0%|          | 0/83 [00:00<?, ?it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   1%|          | 1/83 [00:00<00:09,  8.69it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   4%|▎         | 3/83 [00:00<00:08,  9.70it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   5%|▍         | 4/83 [00:00<00:08,  9.59it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   6%|▌         | 5/83 [00:00<00:08,  9.60it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   7%|▋         | 6/83 [00:00<00:08,  9.36it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   8%|▊         | 7/83 [00:00<00:08,  9.44it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  11%|█         | 9/83 [00:00<00:07,  9.76it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  13%|█▎        | 11/83 [00:01<00:06, 10.41it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  16%|█▌        | 13/83 [00:01<00:06, 10.85it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  18%|█▊        | 15/83 [00:01<00:06, 11.25it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  20%|██        | 17/83 [00:01<00:05, 11.20it/s]
