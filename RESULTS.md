@@ -1,13 +1,18 @@
 # Multilingual Summarization Benchmarking — Consolidated Results
 
-**Status as of 2026-08-11.** Iterations 1–3 complete. Romanized and code-switched conditions,
-and LLM-judge scoring, are not yet run.
+**Status as of 2026-08-11.** Native-script condition complete and judged (18,000 generations,
+18,000 LLM-judge scores). Romanized and code-switched conditions not yet run.
+
+**If you read one thing:** §5b.5. Tokenizer fertility does **not** predict summarization quality
+on either metric. Model size does (ρ = +0.905). Fertility governs cost — 37× runtime — not
+capability. And §5b.2: the chrF ranking in §4 should not be used, because chrF fails to recover
+the size ordering that the judge recovers cleanly.
 
 Compares summarization across model families at matched sizes (7–30B) in Hindi, Bengali, Punjabi,
 Tamil, Telugu and English, with tokenizer fertility as the candidate explanatory variable.
 
 All numbers below are measured on this hardware from these weights. Nothing is quoted from
-published tables — see §6.1 for why that distinction turned out to matter.
+published tables — see §3.2 for why that distinction turned out to matter.
 
 ---
 
@@ -115,7 +120,9 @@ Telugu. Punjabi is thin on *data availability* but mid-pack on fertility.
 
 **The entire field spans 25.65–29.99.** No model dominates: the per-language winner changes four
 times across six languages (Llama on hi/bn, Qwen3-30B-A3B on pa, Mistral-7B on ta, gemma-2 on
-te/en). **Read §6 before drawing conclusions from this table.**
+te/en). **Do not use this ranking.** §5b shows chrF fails to recover the model-size ordering and
+substantially measures how much each model copied from the source. It is retained because the
+disagreement with the judge is itself a result.
 
 ---
 
@@ -176,6 +183,80 @@ Fertility is a deployment-cost argument, not a capability argument.
 
 ---
 
+## 5b. Result — LLM judge, and the collapse of the chrF ranking
+
+`gpt-oss-120b`, reference-based (article + gold + candidate), scoring coverage / faithfulness /
+fluency 1–5. All 18,000 rows judged in 35 min; 30 unparseable (0.17%). Indic languages only below
+(15,000 rows).
+
+| Family | Band | Model | coverage | faith | fluency | **judge rank** | chrF rank |
+|---|---|---|---|---|---|---|---|
+| Mistral | 21–30B | `Mistral-Small-3.2-24B` | **2.83** | 4.71 | 4.90 | **1** | 6 |
+| Qwen | 21–30B | `Qwen3-30B-A3B` | 2.80 | 4.66 | 4.89 | **2** | 3 |
+| Gemma | 21–30B | `gemma-2-27b-it` | 2.71 | 4.66 | 4.89 | **3** | 2 |
+| Sarvam | 21–30B | `sarvam-30b` | 2.53 | 4.49 | 4.90 | **4** | 5 |
+| Qwen | 21–30B | `Qwen3-32B` | 2.49 | 4.75 | 4.89 | **5** | 9 |
+| Qwen | 13–20B | `Qwen3-14B-Instruct` | 2.47 | 4.73 | 4.91 | **6** | 7 |
+| Qwen | 7–12B | `Qwen3.5-9B` | 2.44 | 3.97 | 4.81 | **7** | 8 |
+| Qwen | 7–12B | `Qwen3-8B` | 2.34 | 4.65 | 4.90 | **8** | 10 |
+| Llama | 7–12B | `Llama-3.1-8B-Instruct` | 2.31 | 4.55 | 4.88 | **9** | **1** |
+| Mistral | 7–12B | `Mistral-7B-Instruct-v0.3` | 2.23 | 3.81 | 3.68 | **10** | 4 |
+
+**5b.1 The two metrics do not agree at all.** Spearman ρ between judge coverage and chrF is
+**0.091 (p = 0.80)**. `Llama-3.1-8B` moves from 1st on chrF to 9th on the judge;
+`Mistral-7B-v0.3` from 4th to last.
+
+**5b.2 The judge recovers the size ordering; chrF does not.** Judge ranks 1–5 are *all five*
+21–30B models, rank 6 is the sole 13–20B model, ranks 7–10 are *all four* 7–12B models — a near
+perfect sort by parameter band.
+
+| | vs. size band |
+|---|---|
+| **judge coverage** | ρ = **+0.905** (p = 0.0003) |
+| **chrF** | ρ = +0.134 (p = 0.71) |
+
+This is the strongest available validation of the judge and indictment of chrF. Bigger models
+summarizing better is the one relationship we can assert on priors; the metric that recovers it
+is measuring something real, and the metric that scrambles it is not.
+
+**5b.3 The two metrics disagree about copying *in opposite directions*.**
+
+| | vs. `copy_rate` |
+|---|---|
+| chrF | **r = +0.32** (rewards extraction) |
+| judge coverage | **r = −0.67, p = 0.033** (penalises extraction) |
+
+chrF's ranking was substantially a ranking of how much each model copied from the source. §6.5
+quantifies the size of that effect.
+
+**5b.4 Faithfulness and fluency are near-ceiling and mostly do not discriminate** (means 4.52 and
+4.80). They earn their place by catching the two genuine failures: `Mistral-7B-v0.3` (faith 3.81,
+fluency 3.68 — the runaway generator) and `Qwen3.5-9B` (faith 3.97). Coverage is the working
+dimension.
+
+### 5b.5 The central question, answered
+
+**Tokenizer fertility does not predict summarization quality.**
+
+| Test | Result |
+|---|---|
+| fertility vs chrF | r = −0.11 (p = 0.76) |
+| fertility vs judge coverage | r = −0.55 (p = 0.097) |
+| fertility vs copy_rate | r = **+0.65** |
+| fertility vs judge coverage, **controlling for copy_rate** | **r = −0.20 (p = 0.61)** |
+
+The judge shows a marginal negative association between fertility and quality — but it is
+**mediated by extractiveness, not causal**. High-fertility models copy more, and copying lowers
+judged coverage; once copying is held constant, fertility explains essentially nothing. Combined
+with the Qwen3 ladder (§5.1), where fertility is byte-identical across a 3.85-point chrF spread,
+the answer is consistent across both metrics and both study designs.
+
+**What predicts quality here is model size (ρ = +0.905), not tokenizer efficiency.** Fertility
+governs *cost* (§5.2: 37× runtime) and *context budget*, which are real and separate deployment
+concerns.
+
+---
+
 ## 6. Result — behaviour, and why the metric is suspect
 
 | Model | script ok | length ratio | cap hits | chrF |
@@ -217,6 +298,30 @@ across models is r = 0.27 (p = 0.46) — the obvious confound was checked and re
 
 Every model degrades; `gemma-2` has the best short-article score and the worst degradation.
 
+**6.5 chrF rewards copying, and the effect is nearly as large as the whole ranking.**
+`copy_rate` = fraction of a summary's character 5-grams appearing verbatim in the source article.
+Across all 18,000 rows, binned into quartiles:
+
+| copy-rate quartile | mean chrF |
+|---|---|
+| Q1 most abstractive | 26.59 |
+| Q2 | 27.91 |
+| Q3 | 29.09 |
+| Q4 most extractive | **29.76** |
+
+**A 3.17-point gap**, against a 4.34-point spread across all ten models — so roughly **73% of the
+apparent quality range is extractiveness, not summarization skill**. It holds within every language
+separately (r = +0.09 to +0.26, all p < 1e-6), so it is not a language-difficulty artifact. The
+most extractive model (`Mistral-7B-v0.3`, 0.78) ranks 4th on chrF and **last** on the judge; the
+most abstractive (`Qwen3.5-9B`, 0.51) ranks 10th on chrF and 7th on the judge.
+
+**6.6 Contamination: not supported, and one number explicitly not claimed.** `ref_echo`
+(candidate n-grams matching the gold but absent from the article) correlates with chrF at r = 0.44
+— but that is **mechanically circular**, since chrF *is* overlap with the gold. It is not evidence
+of memorization and is not reported as such. On the honest reading, `gemma-2-27b-it` has the
+highest ref_echo (0.032 vs ~0.019 typical), which is weak and non-decisive. Contamination remains
+**unproven in either direction**; CrossSum-IN is the better test and is still queued.
+
 **6.4 No model was context-limited.** Zero truncation across all 18,000 items, including
 `gemma-2-27b-it` at its 8192 ceiling — every other contestant supports 32k–262k. Its efficient
 tokenizer offsets the small window, so context length and fertility partly cancel. The truncation
@@ -227,12 +332,20 @@ of every Telugu article and 0% of Hindi** — the fertility→context effect in 
 
 ## 7. Caveats and threats to validity
 
-**7.1 chrF may not be discriminating summarization quality.** The whole field spans 4.3 chrF
-points. The literature this project rests on predicts exactly this: IndicGenBench reports ChrF
-*because* token-level metrics fail on low-resource languages, HinGE finds five standard NLG
-metrics ineffective, ITEM examines this precise reliability question. **The §5 null result is
-currently "fertility does not predict chrF."** It becomes "does not predict quality" only if the
-LLM judge agrees. That makes judging the critical path, ahead of the romanized condition.
+**7.1 chrF does not measure summarization quality here — RESOLVED, and it does not.** The judge
+recovers the model-size ordering at ρ = +0.905 while chrF manages ρ = +0.134; the two rank models
+at ρ = 0.091 with each other. chrF rewards extraction (r = +0.32) where the judge penalises it
+(r = −0.67). This is exactly what the underlying literature predicts — IndicGenBench reports ChrF
+*because* token-level metrics fail on low-resource languages, HinGE finds five standard NLG metrics
+ineffective, ITEM examines this precise question. **The fertility null result now holds on both
+metrics** (§5b.5), which is why it is stated as a conclusion rather than a caveat.
+
+**7.1b The judge is a single judge, unvalidated against humans.** `gpt-oss-120b` has zero
+self-preference bias here (no OpenAI model is a contestant) and recovers the size ordering, which
+is strong circumstantial validation. It is *not* human agreement. Inter-judge agreement against
+`gpt-oss-20b`, and a judge-score-vs-length bias check, are still outstanding. Coverage means cluster
+in 2.2–2.8 on a 1–5 scale, so differences between adjacent models are small and no confidence
+intervals have been computed.
 
 **7.2 Contamination is a live alternative explanation for the §4 ranking.** The top two models
 are the two *oldest* — `gemma-2-27b-it` (Jun 2024) and `Llama-3.1-8B` (Jul 2024) — from when
@@ -290,7 +403,8 @@ Each of these would have silently corrupted results rather than failing loudly:
 
 | | Status |
 |---|---|
-| **LLM-judge scoring** (`gpt-oss-120b`, reference-based, `-20b` for inter-judge agreement) | **critical path** — §7.1 |
+| LLM-judge scoring (`gpt-oss-120b`, reference-based) | **DONE** — §5b |
+| Judge validation: `-20b` inter-judge agreement, length-bias check | **outstanding** — §7.1b |
 | Romanized condition (script robustness — the core contribution) | blocked on IndicXlit/`fairseq` under py3.13; pure-Python fallback ready |
 | Code-switched condition | no gold data for hi/bn/pa/te; CS-Sum is Tamil-only and dialogue-shaped |
 | CrossSum-IN (cross-lingual, downloaded) | not run |
