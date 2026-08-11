@@ -190,12 +190,23 @@ zero self-preference bias. Any Qwen or Llama judge would be scoring its own fami
   order means the judge is not the bottleneck; divergence is caught for ~5% of the compute.
 - Judge reasoning effort **medium** — item 3's "no thinking" governs contestants, not the judge.
 
-### Still unresolved
+### ⚠️ TODO — Sarvam-M (deliberately deferred, do not silently drop)
 
-- **Sarvam-M** was approved for inclusion but is **not in `/home/models`** and the no-download
-  policy forbids fetching it (~47 GB). It remains the cleanest experiment available — identical
-  Mistral-Small backbone to a model already on disk, isolating the effect of Indic post-training.
-  Pull this one model, or drop it?
+> **`sarvamai/sarvam-m` (23.6B, ~47 GB) is NOT downloaded and NOT in the run.**
+> Decision 2026-08-11: keep as an explicit TODO rather than fetch it now.
+>
+> **Why it still matters:** Sarvam-M is built on Mistral Small, and
+> `Mistral-Small-3.2-24B-Instruct-2506` is already local. That pair is the only
+> near-controlled test available anywhere in this inventory of **what Indic-specific
+> post-training does to an identical backbone** — same architecture, same parameter
+> count, same band, one variable. Every other cross-family comparison in this study
+> confounds architecture, data, and tokenizer at once.
+>
+> **Cost to add:** one ~47 GB download into `models/`, one registry entry in
+> `src/common.py`, one `generate.py` invocation. No new code.
+>
+> **Caveat:** deprecated by Sarvam (they direct users to 30B/105B); weights remain
+> available and usable for research.
 
 ## 6b. Inference pipeline — DONE (iteration 2)
 
