@@ -144,8 +144,12 @@ Fertility held *exactly* constant (byte-identical tokenizer, §3.4):
 **A 3.85-point chrF spread with fertility fixed** — wider than the spread across the entire
 1.88→9.61 fertility range. Whatever drives quality here, it is not the tokenizer.
 
-Also visible: `Qwen3-30B-A3B` (MoE, ~3B active) beats `Qwen3-32B` (dense) by **3.76 chrF** at
-comparable total size on an identical tokenizer.
+⚠️ **Do not read this as "MoE beats dense."** `Qwen3-30B-A3B-Instruct-**2507**` is the July 2025
+post-training refresh, while `Qwen3-8B` and `Qwen3-32B` are the original April 2025 hybrid
+releases. Its 3.76-point lead over `Qwen3-32B` confounds architecture with post-training vintage
+and cannot be attributed to either. The ladder is a clean control **for fertility** — that is what
+the byte-identical tokenizer buys — and nothing else. Separating architecture from vintage would
+need `Qwen3-32B-Instruct-2507`, which is not on disk.
 
 ### 5.2 What fertility *does* predict: cost
 
