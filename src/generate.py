@@ -87,8 +87,10 @@ def main():
     ap.add_argument("--buckets", nargs="+", default=None)
     ap.add_argument("--condition", default="native", choices=["native", "roman"])
     ap.add_argument("--limit", type=int, default=0, help="items per language (0 = all)")
-    ap.add_argument("--max-model-len", type=int, default=8192)
-    ap.add_argument("--gpu-frac", type=float, default=0.90)
+    ap.add_argument("--max-model-len", type=int, default=0, help="0 = model native, capped at 32k")
+    # GPU 4 is shared with the user's other jobs; leave headroom rather than
+    # claiming the whole card. 0.80 of 143GB still fits any contestant plus KV cache.
+    ap.add_argument("--gpu-frac", type=float, default=0.80)
     ap.add_argument("--tag", default="")
     args = ap.parse_args()
 
@@ -98,14 +100,16 @@ def main():
         raise SystemExit("no items matched")
     tpc = C.load_tok_per_char()
 
+    ctx = args.max_model_len or C.model_ctx(args.model)
+
     from vllm import LLM, SamplingParams
 
     t0 = time.time()
-    llm = LLM(model=spec["path"], max_model_len=args.max_model_len,
+    llm = LLM(model=spec["path"], max_model_len=ctx,
               gpu_memory_utilization=args.gpu_frac, enforce_eager=False,
               **spec.get("vllm", {}))
     load_s = time.time() - t0
-    print(f"loaded {args.model} in {load_s:.0f}s")
+    print(f"loaded {args.model} in {load_s:.0f}s (ctx={ctx})")
 
     tok = llm.get_tokenizer()
     OUTDIR.mkdir(parents=True, exist_ok=True)
@@ -124,15 +128,22 @@ def main():
         max_tok = C.max_tokens_for(args.model, lang, tpc)
         sp = SamplingParams(temperature=0.0, max_tokens=max_tok, seed=0)
 
+        budget = ctx - max_tok - 8  # leave room for the generation itself
         convs, kept = [], []
         for r in sub:
-            prompt = C.build_prompt(r["text"], lang, args.condition)
-            ids = render(tok, prompt, spec)
-            n_in = len(ids)
-            # Record truncation rather than silently letting vLLM clip the prompt:
-            # high-fertility models on long articles are exactly where this bites.
-            r = dict(r, prompt_tokens=n_in,
-                     truncated=bool(n_in + max_tok > args.max_model_len))
+            article, dropped, tries = r["text"], 0, 0
+            ids = render(tok, C.build_prompt(article, lang, args.condition), spec)
+            # Trim the ARTICLE (never the instructions) until the prompt fits.
+            # Which model/language pairs need this, and by how much, is itself the
+            # fertility-versus-context-budget result — so it is recorded, not hidden.
+            while len(ids) > budget and tries < 6 and len(article) > 200:
+                keep = max(200, int(len(article) * budget / len(ids) * 0.95))
+                dropped += len(article) - keep
+                article = article[:keep]
+                ids = render(tok, C.build_prompt(article, lang, args.condition), spec)
+                tries += 1
+            r = dict(r, prompt_tokens=len(ids), truncated=dropped > 0,
+                     chars_dropped=dropped)
             convs.append({"prompt_token_ids": ids})
             kept.append(r)
 
@@ -142,6 +153,8 @@ def main():
 
         expected = C.LANG_SCRIPT[lang]
         n_trunc = sum(r["truncated"] for r in kept)
+        drop_pct = (100.0 * sum(r["chars_dropped"] for r in kept)
+                    / max(1, sum(r["text_chars"] for r in kept)))
         for r, o in zip(kept, outs):
             text = o.outputs[0].text.strip()
             rec = {
@@ -149,6 +162,7 @@ def main():
                 "condition": args.condition, "lang": lang, "bucket": r["bucket"],
                 "id": r["id"], "text_chars": r["text_chars"],
                 "prompt_tokens": r["prompt_tokens"], "prompt_truncated": r["truncated"],
+                "chars_dropped": r["chars_dropped"], "ctx": ctx,
                 "max_tokens": max_tok,
                 "gen": text, "gen_chars": len(text),
                 "gen_tokens": len(o.outputs[0].token_ids),
@@ -165,7 +179,7 @@ def main():
             s = C.classify_script(o.outputs[0].text.strip(), expected)
             scripts[s] = scripts.get(s, 0) + 1
         print(f"  {lang}: n={len(kept)} max_tok={max_tok} {dt:.0f}s "
-              f"| prompt_trunc={n_trunc} hit_cap={hit_cap} | script={scripts}")
+              f"| trunc={n_trunc} ({drop_pct:.1f}% chars) hit_cap={hit_cap} | script={scripts}")
 
     out_f.close()
     print(f"\nwrote {dst} ({n_done} rows)")

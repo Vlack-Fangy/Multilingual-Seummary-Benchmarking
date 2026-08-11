@@ -80,6 +80,32 @@ MODELS = {
 }
 
 
+# Cap context at 32k: enough for the longest article in the eval set even at the
+# worst measured fertility (~10k chars x 1.7 tok/char), while keeping KV cache
+# affordable. Models are given the smaller of this and their native limit.
+MAX_CTX = 32768
+
+
+def model_ctx(model_key):
+    """Native context length from config, capped at MAX_CTX.
+
+    gemma-2-27b-it is the binding constraint at 8192 — every other contestant
+    supports 32k-262k. Articles that do not fit are truncated and flagged rather
+    than dropped, so all models are still scored on the same item set.
+    """
+    import json
+    spec = MODELS[model_key]
+    for fn in ("config.json", "params.json"):
+        p = Path(spec["path"]) / fn
+        if p.exists():
+            c = json.loads(p.read_text())
+            t = c.get("text_config", c)
+            n = t.get("max_position_embeddings")
+            if n:
+                return min(int(n), MAX_CTX)
+    return 8192
+
+
 def load_tok_per_char():
     """{model: {lang: tokens per character}} from the iteration-1 measurement."""
     out = {}
