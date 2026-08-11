@@ -1,1 +1,81 @@
 === Llama-3.1-8B-Instruct (native) 13:00:08 ===
+loaded Llama-3.1-8B-Instruct in 15s (ctx=32768)
+  hi: n=300 max_tok=312 14s | trunc=0 (0.0% chars) hit_cap=0 | script={'Devanagari': 299, 'mixed': 1}
+  bn: n=300 max_tok=730 38s | trunc=0 (0.0% chars) hit_cap=0 | script={'Bengali': 300}
+  pa: n=300 max_tok=884 67s | trunc=0 (0.0% chars) hit_cap=0 | script={'Gurmukhi': 300}
+  ta: n=300 max_tok=954 69s | trunc=0 (0.0% chars) hit_cap=0 | script={'Tamil': 300}
+  te: n=300 max_tok=1011 87s | trunc=0 (0.0% chars) hit_cap=0 | script={'Telugu': 300}
+  en: n=300 max_tok=132 5s | trunc=0 (0.0% chars) hit_cap=0 | script={'Latin': 300}
+=== Qwen3-8B (native) 13:05:16 ===
+loaded Qwen3-8B in 41s (ctx=32768)
+  hi: n=300 max_tok=530 27s | trunc=0 (0.0% chars) hit_cap=0 | script={'Devanagari': 300}
+  bn: n=300 max_tok=651 39s | trunc=0 (0.0% chars) hit_cap=0 | script={'Bengali': 300}
+  pa: n=300 max_tok=839 61s | trunc=0 (0.0% chars) hit_cap=0 | script={'Gurmukhi': 300}
+  ta: n=300 max_tok=781 49s | trunc=0 (0.0% chars) hit_cap=0 | script={'Tamil': 298, 'mixed': 2}
+  te: n=300 max_tok=871 66s | trunc=0 (0.0% chars) hit_cap=0 | script={'Telugu': 300}
+  en: n=300 max_tok=134 8s | trunc=0 (0.0% chars) hit_cap=0 | script={'Latin': 300}
+=== Qwen3.5-9B (native) 13:10:17 ===
+loaded Qwen3.5-9B in 99s (ctx=32768)
+  hi: n=300 max_tok=381 18s | trunc=0 (0.0% chars) hit_cap=0 | script={'Devanagari': 299, 'mixed': 1}
+  bn: n=300 max_tok=413 16s | trunc=0 (0.0% chars) hit_cap=0 | script={'Bengali': 300}
+  pa: n=300 max_tok=474 26s | trunc=0 (0.0% chars) hit_cap=0 | script={'Gurmukhi': 300}
+  ta: n=300 max_tok=529 23s | trunc=0 (0.0% chars) hit_cap=0 | script={'Tamil': 299, 'mixed': 1}
+  te: n=300 max_tok=498 28s | trunc=0 (0.0% chars) hit_cap=0 | script={'Telugu': 300}
+  en: n=300 max_tok=133 12s | trunc=0 (0.0% chars) hit_cap=0 | script={'Latin': 300}
+=== Mistral-7B-Instr-v0.3 (native) 13:14:14 ===
+loaded Mistral-7B-Instr-v0.3 in 42s (ctx=32768)
+  hi: n=300 max_tok=590 43s | trunc=0 (0.0% chars) hit_cap=53 | script={'Devanagari': 300}
+  bn: n=300 max_tok=688 64s | trunc=0 (0.0% chars) hit_cap=28 | script={'Bengali': 300}
+  pa: n=300 max_tok=1285 159s | trunc=0 (0.0% chars) hit_cap=41 | script={'Gurmukhi': 287, 'mixed': 13}
+  ta: n=300 max_tok=809 66s | trunc=0 (0.0% chars) hit_cap=7 | script={'Tamil': 288, 'mixed': 11, 'Latin': 1}
+  te: n=300 max_tok=968 97s | trunc=0 (0.0% chars) hit_cap=15 | script={'Telugu': 278, 'mixed': 22}
+  en: n=300 max_tok=142 9s | trunc=0 (0.0% chars) hit_cap=34 | script={'Latin': 300}
+=== Qwen3-14B-Instruct (native) 13:22:26 ===
+loaded Qwen3-14B-Instruct in 47s (ctx=32768)
+  hi: n=300 max_tok=530 55s | trunc=0 (0.0% chars) hit_cap=0 | script={'Devanagari': 299, 'mixed': 1}
+  bn: n=300 max_tok=651 70s | trunc=0 (0.0% chars) hit_cap=0 | script={'Bengali': 300}
+  pa: n=300 max_tok=839 104s | trunc=0 (0.0% chars) hit_cap=0 | script={'Gurmukhi': 300}
+  ta: n=300 max_tok=781 79s | trunc=0 (0.0% chars) hit_cap=0 | script={'Tamil': 300}
+  te: n=300 max_tok=871 108s | trunc=0 (0.0% chars) hit_cap=0 | script={'Telugu': 300}
+  en: n=300 max_tok=134 18s | trunc=0 (0.0% chars) hit_cap=0 | script={'Latin': 300}
+=== Mistral-Small-3.2-24B (native) 13:30:39 ===
+loaded Mistral-Small-3.2-24B in 78s (ctx=32768)
+  hi: n=300 max_tok=236 27s | trunc=0 (0.0% chars) hit_cap=0 | script={'Devanagari': 299, 'mixed': 1}
+  bn: n=300 max_tok=286 39s | trunc=0 (0.0% chars) hit_cap=0 | script={'Bengali': 300}
+  pa: n=300 max_tok=363 61s | trunc=0 (0.0% chars) hit_cap=0 | script={'Gurmukhi': 300}
+  ta: n=300 max_tok=301 41s | trunc=0 (0.0% chars) hit_cap=0 | script={'Tamil': 299, 'mixed': 1}
+  te: n=300 max_tok=305 54s | trunc=0 (0.0% chars) hit_cap=0 | script={'Telugu': 300}
+  en: n=300 max_tok=134 18s | trunc=0 (0.0% chars) hit_cap=0 | script={'Latin': 300}
+=== gemma-2-27b-it (native) 13:36:07 ===
+loaded gemma-2-27b-it in 31s (ctx=8192)
+  hi: n=300 max_tok=237 35s | trunc=0 (0.0% chars) hit_cap=0 | script={'Devanagari': 299, 'mixed': 1}
+  bn: n=300 max_tok=356 69s | trunc=0 (0.0% chars) hit_cap=0 | script={'Bengali': 300}
+  pa: n=300 max_tok=383 80s | trunc=0 (0.0% chars) hit_cap=0 | script={'Gurmukhi': 298, 'mixed': 2}
+  ta: n=300 max_tok=343 65s | trunc=0 (0.0% chars) hit_cap=0 | script={'Tamil': 299, 'mixed': 1}
+  te: n=300 max_tok=368 77s | trunc=0 (0.0% chars) hit_cap=0 | script={'Telugu': 300}
+  en: n=300 max_tok=131 29s | trunc=0 (0.0% chars) hit_cap=0 | script={'Latin': 300}
+=== Qwen3-30B-A3B (native) 13:42:42 ===
+loaded Qwen3-30B-A3B in 95s (ctx=32768)
+  hi: n=300 max_tok=530 24s | trunc=0 (0.0% chars) hit_cap=0 | script={'Devanagari': 299, 'mixed': 1}
+  bn: n=300 max_tok=651 24s | trunc=0 (0.0% chars) hit_cap=0 | script={'Bengali': 300}
+  pa: n=300 max_tok=839 48s | trunc=0 (0.0% chars) hit_cap=0 | script={'Gurmukhi': 300}
+  ta: n=300 max_tok=781 38s | trunc=0 (0.0% chars) hit_cap=0 | script={'Tamil': 300}
+  te: n=300 max_tok=871 48s | trunc=0 (0.0% chars) hit_cap=0 | script={'Telugu': 300}
+  en: n=300 max_tok=134 4s | trunc=0 (0.0% chars) hit_cap=0 | script={'Latin': 300}
+=== Qwen3-32B (native) 13:47:34 ===
+loaded Qwen3-32B in 94s (ctx=32768)
+  hi: n=300 max_tok=530 130s | trunc=0 (0.0% chars) hit_cap=0 | script={'Devanagari': 299, 'mixed': 1}
+  bn: n=300 max_tok=651 164s | trunc=0 (0.0% chars) hit_cap=1 | script={'Bengali': 300}
+  pa: n=300 max_tok=839 230s | trunc=0 (0.0% chars) hit_cap=0 | script={'Gurmukhi': 300}
+  ta: n=300 max_tok=781 192s | trunc=0 (0.0% chars) hit_cap=0 | script={'Tamil': 299, 'mixed': 1}
+  te: n=300 max_tok=871 251s | trunc=0 (0.0% chars) hit_cap=0 | script={'Telugu': 300}
+  en: n=300 max_tok=134 32s | trunc=0 (0.0% chars) hit_cap=0 | script={'Latin': 300}
+=== sarvam-30b (native) 14:05:59 ===
+loaded sarvam-30b in 46s (ctx=32768)
+  hi: n=300 max_tok=177 5s | trunc=0 (0.0% chars) hit_cap=0 | script={'Devanagari': 299, 'mixed': 1}
+  bn: n=300 max_tok=178 4s | trunc=0 (0.0% chars) hit_cap=0 | script={'Bengali': 299, 'mixed': 1}
+  pa: n=300 max_tok=201 5s | trunc=0 (0.0% chars) hit_cap=2 | script={'Gurmukhi': 300}
+  ta: n=300 max_tok=208 4s | trunc=0 (0.0% chars) hit_cap=0 | script={'Tamil': 299, 'mixed': 1}
+  te: n=300 max_tok=203 5s | trunc=0 (0.0% chars) hit_cap=0 | script={'Telugu': 299, 'mixed': 1}
+  en: n=300 max_tok=132 4s | trunc=0 (0.0% chars) hit_cap=1 | script={'Latin': 300}
+=== done 14:07:23 ===
