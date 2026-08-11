@@ -1,0 +1,16 @@
+# Corpora are NOT redistributed here — see "Data" in README.
+# XL-Sum and CrossSum-IN are CC BY-NC-SA; this repo carries no NC restriction.
+# Everything under data/ is reproduced exactly by src/download_data.py and
+# src/build_eval_set.py (fixed seed), so nothing is lost by excluding it.
+data/
+
+# Model weights: read from /home/models (shared, read-only) or fetched locally.
+models/
+
+# Raw generations from the main runs — large, regenerated per run.
+results/generations/
+
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
