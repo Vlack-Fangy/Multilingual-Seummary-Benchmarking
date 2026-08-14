@@ -1,0 +1,2 @@
+GPU 1: 139/140 GiB free -> util=0.80
+WARNING 08-14 17:40:04 [system_utils.py:157] We must use the `spawn` multiprocessing start method. Overriding VLLM_WORKER_MULTIPROC_METHOD to 'spawn'. See https://docs.vllm.ai/en/latest/usage/troubleshooting.html#python-multiprocessing for more information. Reasons: CUDA is initialized

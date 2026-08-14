@@ -1,1 +1,25 @@
 === gpu4 Qwen3-14B-Instruct gsm8k 17:28:00 ===
+  hi /native n=  500 acc=0.8860 unparsed=   0   28.5s  gpu_s/1k=   57.0
+  hi /roman  n=  500 acc=0.7960 unparsed=   0   20.9s  gpu_s/1k=   41.8
+  bn /native n=  500 acc=0.8960 unparsed=   0   29.6s  gpu_s/1k=   59.1
+  bn /roman  n=  500 acc=0.4880 unparsed=   0   20.3s  gpu_s/1k=   40.5
+  pa /native n=  500 acc=0.8720 unparsed=   1   34.5s  gpu_s/1k=   69.0
+  pa /roman  n=  500 acc=0.5400 unparsed=   0   21.2s  gpu_s/1k=   42.3
+  ta /native n=  500 acc=0.8540 unparsed=   0   32.3s  gpu_s/1k=   64.6
+  ta /roman  n=  500 acc=0.2360 unparsed=   0   23.8s  gpu_s/1k=   47.6
+  te /native n=  500 acc=0.8240 unparsed=   0   36.6s  gpu_s/1k=   73.3
+  te /roman  n=  500 acc=0.2140 unparsed=   0   20.9s  gpu_s/1k=   41.8
+  en /native n=  500 acc=0.9540 unparsed=   0   17.0s  gpu_s/1k=   33.9
+=== gpu4 Qwen3-14B-Instruct mmlu 17:34:13 ===
+  hi /native n=  500 acc=0.5940 unparsed=   0    9.3s  gpu_s/1k=   18.7
+  hi /roman  n=  500 acc=0.5340 unparsed=   0    9.7s  gpu_s/1k=   19.4
+  bn /native n=  500 acc=0.5360 unparsed=   0   11.2s  gpu_s/1k=   22.4
+  bn /roman  n=  500 acc=0.4260 unparsed=   0    8.3s  gpu_s/1k=   16.6
+  pa /native n=  500 acc=0.5260 unparsed=   0   17.4s  gpu_s/1k=   34.7
+  pa /roman  n=  500 acc=0.4540 unparsed=   0    8.5s  gpu_s/1k=   16.9
+  ta /native n=  500 acc=0.4580 unparsed=   0   16.1s  gpu_s/1k=   32.3
+  ta /roman  n=  500 acc=0.3640 unparsed=   0   10.7s  gpu_s/1k=   21.4
+  te /native n=  500 acc=0.4940 unparsed=   0   17.7s  gpu_s/1k=   35.4
+  te /roman  n=  500 acc=0.4500 unparsed=   0    6.2s  gpu_s/1k=   12.4
+  en /native n=  500 acc=0.8560 unparsed=   0    7.2s  gpu_s/1k=   14.4
+=== gpu4 Mistral-Small-3.2-24B gsm8k 17:37:09 ===
