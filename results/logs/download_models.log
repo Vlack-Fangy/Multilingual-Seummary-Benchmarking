@@ -9,4 +9,7 @@ Still waiting to acquire lock on /home/models/Ministral-3-14B-Instruct-2512-BF16
 path=/home/models/Ministral-3-14B-Instruct-2512-BF16
 27G	/home/models/Ministral-3-14B-Instruct-2512-BF16
 === sarvamai/sarvam-m -> /home/models/sarvam-m  17:47:11 ===
-/home/models/Ministral-3-14B-Instruct-2512/.cache/huggingface/download/IO4xwqmZYzFmxznkwkiNSBwO1H0=.90f791800cc4d355f56cb1e8bf9554c9ddea62a67bdd12280951d3cbded2a32b.a8d6dcee.incomplete'
+Still waiting to acquire lock on /home/models/sarvam-m/.cache/huggingface/.gitignore.lock (elapsed: 0.1 seconds)
+path=/home/models/sarvam-m
+44G	/home/models/sarvam-m
+=== google/gemma-4-26B-A4B-it -> /home/models/gemma-4-26B-A4B-it  18:05:56 ===

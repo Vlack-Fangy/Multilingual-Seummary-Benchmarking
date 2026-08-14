@@ -18,6 +18,10 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parent.parent
 EX = ROOT / "results" / "exact"
 LANGS = ["hi", "bn", "pa", "ta", "te"]
+# Native-script accuracy below this means the model cannot do the task at all,
+# so any script gap is noise around zero rather than robustness.
+FLOOR = 0.25
+
 FAMILY = {"hi": "Indo-Aryan", "bn": "Indo-Aryan", "pa": "Indo-Aryan",
           "ta": "Dravidian", "te": "Dravidian"}
 
@@ -55,16 +59,32 @@ def main():
         j["gap_raw"] = 100 * (j.acc_n - j.acc_r)
         j["gap_parsed"] = 100 * (j.acc_parsed_n - j.acc_parsed_r)
         j["parse_drop"] = 100 * (j.parsed_pct_n - j.parsed_pct_r)
+        # A model that cannot do the task in ANY script has no measurable script
+        # robustness: Mistral-7B-v0.3 scores 0.06 native / 0.08 romanized on Hindi
+        # gsm8k, a "-1.8pt gap" that would rank it above Sarvam. Floor cells are
+        # excluded from gaps and family means rather than silently averaged in.
+        j["at_floor"] = j.acc_n < FLOOR
+        # Retention is scale-free and does not reward uniform failure.
+        j["retention"] = (j.acc_r / j.acc_n).where(~j.at_floor)
         j = j.reset_index()
+        n_floor = int(j.at_floor.sum())
 
         print(f"\n{'='*88}\nT1 SCRIPT GAP — task={task}   (positive = romanized is worse)\n{'='*88}")
-        print(f"{'model':24} {'lang':5} {'raw gap':>9} {'gap|parsed':>11} {'parse drop':>11}")
+        print(f"{'model':24} {'lang':5} {'raw gap':>9} {'gap|parsed':>11} {'retention':>10} {'note':>10}")
         for _, r in j.sort_values(["model", "lang"]).iterrows():
-            print(f"{r.model:24} {r.lang:5} {r.gap_raw:8.1f}pt {r.gap_parsed:10.1f}pt "
-                  f"{r.parse_drop:10.1f}pt")
+            if r.at_floor:
+                print(f"{r.model:24} {r.lang:5} {'--':>9} {'--':>11} {'--':>10} "
+                      f"{'AT FLOOR':>10}  (native acc {r.acc_n:.3f})")
+            else:
+                print(f"{r.model:24} {r.lang:5} {r.gap_raw:8.1f}pt {r.gap_parsed:10.1f}pt "
+                      f"{r.retention:10.2f} {'':>10}")
 
         j["family"] = j.lang.map(FAMILY)
-        fam = j.groupby(["model", "family"])[["gap_raw", "gap_parsed"]].mean().round(1)
+        ok = j[~j.at_floor]
+        if n_floor:
+            print(f"\n  ({n_floor} model-language cells excluded as at-floor, "
+                  f"native acc < {FLOOR})")
+        fam = ok.groupby(["model", "family"])[["gap_raw", "gap_parsed", "retention"]].mean().round(2)
         print(f"\n-- by language family (task={task}) --")
         print(fam.to_string())
 

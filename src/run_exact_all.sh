@@ -14,7 +14,7 @@ LIMIT="${LIMIT:-500}"
 LOG=results/logs; mkdir -p "$LOG"
 
 for m in "$@"; do
-  for task in gsm8k mmlu; do
+  for task in ${TASKS:-gsm8k mmlu}; do
     out="results/exact/${m}__${task}.jsonl"
     if [ -s "$out" ] && [ -s "results/exact/${m}__${task}__summary.json" ]; then
       echo "SKIP $m/$task"; continue

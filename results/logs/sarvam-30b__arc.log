@@ -1,0 +1,11 @@
+GPU 4: 111/140 GiB free -> util=0.72
+WARNING 08-14 18:06:10 [system_utils.py:157] We must use the `spawn` multiprocessing start method. Overriding VLLM_WORKER_MULTIPROC_METHOD to 'spawn'. See https://docs.vllm.ai/en/latest/usage/troubleshooting.html#python-multiprocessing for more information. Reasons: CUDA is initialized
+(EngineCore pid=3697387) Loading safetensors checkpoint shards:   0% Completed | 0/26 [00:00<?, ?it/s]
+(EngineCore pid=3697387) Loading safetensors checkpoint shards:   4% Completed | 1/26 [00:00<00:08,  3.02it/s]
+(EngineCore pid=3697387) Loading safetensors checkpoint shards:   8% Completed | 2/26 [00:00<00:12,  1.94it/s]
+(EngineCore pid=3697387) Loading safetensors checkpoint shards:  12% Completed | 3/26 [00:01<00:11,  2.07it/s]
+(EngineCore pid=3697387) Loading safetensors checkpoint shards:  15% Completed | 4/26 [00:01<00:11,  1.94it/s]
+(EngineCore pid=3697387) Loading safetensors checkpoint shards:  19% Completed | 5/26 [00:03<00:17,  1.17it/s]
+(EngineCore pid=3697387) Loading safetensors checkpoint shards:  23% Completed | 6/26 [00:05<00:23,  1.19s/it]
+(EngineCore pid=3697387) Loading safetensors checkpoint shards:  27% Completed | 7/26 [00:05<00:18,  1.05it/s]
+(EngineCore pid=3697387) Loading safetensors checkpoint shards:  31% Completed | 8/26 [00:06<00:13,  1.33it/s]
