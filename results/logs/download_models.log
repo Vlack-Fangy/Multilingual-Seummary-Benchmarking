@@ -17,3 +17,20 @@ Still waiting to acquire lock on /home/models/gemma-4-26B-A4B-it/.cache/huggingf
 path=/home/models/gemma-4-26B-A4B-it
 49G	/home/models/gemma-4-26B-A4B-it
 === google/gemma-4-31B-it -> /home/models/gemma-4-31B-it  18:16:55 ===
+path=/home/models/gemma-4-31B-it
+59G	/home/models/gemma-4-31B-it
+=== google/gemma-3-27b-it -> /home/models/gemma-3-27b-it  18:36:01 ===
+path=/home/models/gemma-3-27b-it
+52G	/home/models/gemma-3-27b-it
+=== CohereLabs/aya-expanse-8b -> /home/models/aya-expanse-8b  18:53:19 ===
+Error: Access denied. This repository requires approval.
+Hint: set HF_DEBUG=1 as environment variable for full traceback.
+44K	/home/models/aya-expanse-8b
+=== CohereLabs/aya-expanse-32b -> /home/models/aya-expanse-32b  18:53:21 ===
+Error: Access denied. This repository requires approval.
+Hint: set HF_DEBUG=1 as environment variable for full traceback.
+44K	/home/models/aya-expanse-32b
+=== allenai/OLMo-3.1-32B-Think -> /home/models/OLMo-3.1-32B-Think  18:53:22 ===
+path=/home/models/OLMo-3.1-32B-Think
+61G	/home/models/OLMo-3.1-32B-Think
+=== zai-org/GLM-4.7-Flash -> /home/models/GLM-4.7-Flash  19:12:39 ===

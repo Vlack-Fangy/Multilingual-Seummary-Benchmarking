@@ -1,0 +1,13 @@
+=== gpu1 gemma-4-31B-it gsm8k 19:01:09 ===
+  hi /native n=  500 acc=0.9560 unparsed=   0   36.5s  gpu_s/1k=   73.0
+  hi /roman  n=  500 acc=0.9400 unparsed=   0   50.6s  gpu_s/1k=  101.2
+  bn /native n=  500 acc=0.9600 unparsed=   0   45.3s  gpu_s/1k=   90.5
+  bn /roman  n=  500 acc=0.8960 unparsed=   0   61.2s  gpu_s/1k=  122.4
+  pa /native n=  500 acc=0.9560 unparsed=   0   56.5s  gpu_s/1k=  113.1
+  pa /roman  n=  500 acc=0.9220 unparsed=   0   62.2s  gpu_s/1k=  124.4
+  ta /native n=  500 acc=0.9440 unparsed=   0   49.3s  gpu_s/1k=   98.5
+  ta /roman  n=  500 acc=0.8660 unparsed=   0   69.6s  gpu_s/1k=  139.3
+  te /native n=  500 acc=0.9400 unparsed=   0   60.4s  gpu_s/1k=  120.8
+  te /roman  n=  500 acc=0.8520 unparsed=   0   57.5s  gpu_s/1k=  115.1
+  en /native n=  500 acc=0.9780 unparsed=   0   45.0s  gpu_s/1k=   90.0
+=== gpu1 gemma-4-31B-it mmlu 19:14:37 ===

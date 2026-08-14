@@ -1,0 +1,21 @@
+=== gpu1 Ministral-3-8B gsm8k 18:47:35 ===
+FAILED Ministral-3-8B/gsm8k
+  File "/home/harshal/miniconda3/envs/msb/lib/python3.12/site-packages/vllm/multimodal/processing/context.py", line 277, in call_hf_processor
+    raise ValueError(msg) from exc
+ValueError: Failed to apply PixtralProcessor on data={'text': '[IMG]'} with kwargs={'truncation': False, 'return_tensors': 'pt'}
+=== gpu1 Ministral-3-8B mmlu 18:47:54 ===
+FAILED Ministral-3-8B/mmlu
+  File "/home/harshal/miniconda3/envs/msb/lib/python3.12/site-packages/vllm/multimodal/processing/context.py", line 277, in call_hf_processor
+    raise ValueError(msg) from exc
+ValueError: Failed to apply PixtralProcessor on data={'text': '[IMG]'} with kwargs={'truncation': False, 'return_tensors': 'pt'}
+=== gpu1 Ministral-3-14B gsm8k 18:48:06 ===
+FAILED Ministral-3-14B/gsm8k
+  File "/home/harshal/miniconda3/envs/msb/lib/python3.12/site-packages/vllm/multimodal/processing/context.py", line 277, in call_hf_processor
+    raise ValueError(msg) from exc
+ValueError: Failed to apply PixtralProcessor on data={'text': '[IMG]'} with kwargs={'truncation': False, 'return_tensors': 'pt'}
+=== gpu1 Ministral-3-14B mmlu 18:48:18 ===
+FAILED Ministral-3-14B/mmlu
+  File "/home/harshal/miniconda3/envs/msb/lib/python3.12/site-packages/vllm/multimodal/processing/context.py", line 277, in call_hf_processor
+    raise ValueError(msg) from exc
+ValueError: Failed to apply PixtralProcessor on data={'text': '[IMG]'} with kwargs={'truncation': False, 'return_tensors': 'pt'}
+=== gpu1 done 18:48:29 ===

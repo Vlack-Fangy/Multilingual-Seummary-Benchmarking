@@ -95,14 +95,17 @@ MODELS = {
         vllm=dict(dtype="bfloat16")),
     # BF16 repos: the default Ministral-3 releases are natively FP8, which would
     # confound the Mistral arm against an otherwise bf16 field.
+    # Ministral-3 needs a hybrid loader. load_format="mistral" wants
+    # consolidated.safetensors, which we exclude at download as a duplicate of the
+    # shards; the pure-HF path instead tries to build a PixtralProcessor (these are
+    # multimodal) and dies on `[IMG]`. Mistral tokenizer+config bypasses the image
+    # processor, while the DEFAULT weight loader reads the shards we actually have.
     "Ministral-3-8B": dict(
         path="/home/models/Ministral-3-8B-Instruct-2512-BF16", family="Mistral", band="7-12B",
-        vllm=dict(dtype="bfloat16", tokenizer_mode="mistral", config_format="mistral",
-                  load_format="mistral")),
+        vllm=dict(dtype="bfloat16", tokenizer_mode="mistral", config_format="mistral")),
     "Ministral-3-14B": dict(
         path="/home/models/Ministral-3-14B-Instruct-2512-BF16", family="Mistral", band="13-20B",
-        vllm=dict(dtype="bfloat16", tokenizer_mode="mistral", config_format="mistral",
-                  load_format="mistral")),
+        vllm=dict(dtype="bfloat16", tokenizer_mode="mistral", config_format="mistral")),
     "sarvam-m": dict(
         path="/home/models/sarvam-m", family="Sarvam", band="21-32B",
         vllm=dict(dtype="bfloat16"), chat_kwargs=NO_THINK),
@@ -115,6 +118,16 @@ MODELS = {
     "OLMo-3.1-32B-Think": dict(
         path="/home/models/OLMo-3.1-32B-Think", family="AI2", band="21-32B",
         vllm=dict(dtype="bfloat16")),
+    # BharatGen Param2: 17B total / 2.4B active MoE — the same active budget as
+    # sarvam-30b, from a different organisation. A third independent Indic-first
+    # model, so it tests whether the robustness result generalises beyond Sarvam.
+    # CAVEATS: (a) "Thinking" model whose chat template carries NO thinking toggle,
+    # so it cannot be placed on the non-thinking footing every other contestant is
+    # on — report it as a labelled separate entry, not inside the ranking;
+    # (b) 4096 context, so T1/T2 only — it cannot take T5's 10k-char articles.
+    "Param2-17B-A2.4B": dict(
+        path="/home/models/Param2-17B-A2.4B-Thinking", family="BharatGen", band="13-20B",
+        vllm=dict(dtype="bfloat16", trust_remote_code=True)),
     "bloomz-7b1": dict(
         path="/home/models/bloomz-7b1", family="BigScience", band="7-12B",
         vllm=dict(dtype="bfloat16")),

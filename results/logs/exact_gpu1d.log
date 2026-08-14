@@ -1,0 +1,45 @@
+=== gpu1 gemma-4-26B-A4B-it gsm8k 18:32:54 ===
+  hi /native n=  500 acc=0.9280 unparsed=   0   13.9s  gpu_s/1k=   27.8
+  hi /roman  n=  500 acc=0.8740 unparsed=   0   14.1s  gpu_s/1k=   28.2
+  bn /native n=  500 acc=0.9280 unparsed=   0   12.8s  gpu_s/1k=   25.7
+  bn /roman  n=  500 acc=0.7960 unparsed=   0   19.2s  gpu_s/1k=   38.4
+  pa /native n=  500 acc=0.9220 unparsed=   0   18.5s  gpu_s/1k=   37.0
+  pa /roman  n=  500 acc=0.8320 unparsed=   0   14.8s  gpu_s/1k=   29.7
+  ta /native n=  500 acc=0.9000 unparsed=   0   22.1s  gpu_s/1k=   44.2
+  ta /roman  n=  500 acc=0.6240 unparsed=   0   16.7s  gpu_s/1k=   33.3
+  te /native n=  500 acc=0.8940 unparsed=   0   14.2s  gpu_s/1k=   28.4
+  te /roman  n=  500 acc=0.6660 unparsed=   0   15.6s  gpu_s/1k=   31.2
+  en /native n=  500 acc=0.9440 unparsed=   0   21.2s  gpu_s/1k=   42.4
+=== gpu1 gemma-4-26B-A4B-it mmlu 18:39:06 ===
+  hi /native n=  500 acc=0.5860 unparsed=  22    9.3s  gpu_s/1k=   18.5
+  hi /roman  n=  500 acc=0.5240 unparsed=  18    9.6s  gpu_s/1k=   19.2
+  bn /native n=  500 acc=0.6760 unparsed=  18    8.6s  gpu_s/1k=   17.3
+  bn /roman  n=  500 acc=0.5080 unparsed=  16   10.0s  gpu_s/1k=   20.0
+  pa /native n=  500 acc=0.5660 unparsed=   9   10.7s  gpu_s/1k=   21.3
+  pa /roman  n=  500 acc=0.5120 unparsed=   7   10.2s  gpu_s/1k=   20.3
+  ta /native n=  500 acc=0.6000 unparsed=  15   16.9s  gpu_s/1k=   33.9
+  ta /roman  n=  500 acc=0.4420 unparsed=  10   10.2s  gpu_s/1k=   20.5
+  te /native n=  500 acc=0.5700 unparsed=  26    9.8s  gpu_s/1k=   19.6
+  te /roman  n=  500 acc=0.4300 unparsed=  21   11.1s  gpu_s/1k=   22.2
+  en /native n=  500 acc=0.6900 unparsed=  14   15.8s  gpu_s/1k=   31.5
+=== gpu1 Ministral-3-8B gsm8k 18:43:25 ===
+FAILED Ministral-3-8B/gsm8k
+  File "/home/harshal/miniconda3/envs/msb/lib/python3.12/site-packages/vllm/v1/engine/utils.py", line 1253, in wait_for_engine_startup
+    raise RuntimeError(
+RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}
+=== gpu1 Ministral-3-8B mmlu 18:43:48 ===
+FAILED Ministral-3-8B/mmlu
+  File "/home/harshal/miniconda3/envs/msb/lib/python3.12/site-packages/vllm/v1/engine/utils.py", line 1253, in wait_for_engine_startup
+    raise RuntimeError(
+RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}
+=== gpu1 Ministral-3-14B gsm8k 18:44:10 ===
+FAILED Ministral-3-14B/gsm8k
+  File "/home/harshal/miniconda3/envs/msb/lib/python3.12/site-packages/vllm/v1/engine/utils.py", line 1253, in wait_for_engine_startup
+    raise RuntimeError(
+RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}
+=== gpu1 Ministral-3-14B mmlu 18:44:29 ===
+FAILED Ministral-3-14B/mmlu
+  File "/home/harshal/miniconda3/envs/msb/lib/python3.12/site-packages/vllm/v1/engine/utils.py", line 1253, in wait_for_engine_startup
+    raise RuntimeError(
+RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}
+=== gpu1 done 18:44:49 ===

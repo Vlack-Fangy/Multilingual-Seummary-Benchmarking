@@ -1,0 +1,64 @@
+=== gpu4 sarvam-30b arc 18:54:57 ===
+  hi /native n=  500 acc=0.7380 unparsed=   9   11.6s  gpu_s/1k=   23.2
+  bn /native n=  500 acc=0.6340 unparsed=  10   12.9s  gpu_s/1k=   25.8
+  pa /native n=  500 acc=0.6860 unparsed=  13   12.1s  gpu_s/1k=   24.2
+  ta /native n=  500 acc=0.6020 unparsed=  43   12.3s  gpu_s/1k=   24.6
+  te /native n=  500 acc=0.6280 unparsed=  18   12.0s  gpu_s/1k=   24.1
+  en /native n=  500 acc=0.7580 unparsed=   9   12.5s  gpu_s/1k=   25.0
+=== gpu4 sarvam-m arc 18:57:31 ===
+  hi /native n=  500 acc=0.8000 unparsed=   4   20.9s  gpu_s/1k=   41.8
+  bn /native n=  500 acc=0.8220 unparsed=   3   17.8s  gpu_s/1k=   35.6
+  pa /native n=  500 acc=0.7820 unparsed=   3   21.5s  gpu_s/1k=   43.0
+  ta /native n=  500 acc=0.8080 unparsed=   2   17.8s  gpu_s/1k=   35.6
+  te /native n=  500 acc=0.7840 unparsed=   3   20.2s  gpu_s/1k=   40.3
+  en /native n=  500 acc=0.9360 unparsed=   0   13.8s  gpu_s/1k=   27.6
+=== gpu4 gemma-4-12B-it arc 19:00:21 ===
+  hi /native n=  500 acc=0.7660 unparsed=  19   26.4s  gpu_s/1k=   52.7
+  bn /native n=  500 acc=0.7780 unparsed=  13   26.3s  gpu_s/1k=   52.6
+  pa /native n=  500 acc=0.6040 unparsed=  20   31.0s  gpu_s/1k=   62.0
+  ta /native n=  500 acc=0.7200 unparsed=  11   25.5s  gpu_s/1k=   51.0
+  te /native n=  500 acc=0.6980 unparsed=  23   27.5s  gpu_s/1k=   55.0
+  en /native n=  500 acc=0.8100 unparsed=   8   25.3s  gpu_s/1k=   50.6
+=== gpu4 gemma-4-26B-A4B-it arc 19:04:47 ===
+  hi /native n=  500 acc=0.5860 unparsed=  20   18.4s  gpu_s/1k=   36.9
+  bn /native n=  500 acc=0.7340 unparsed=   8   17.5s  gpu_s/1k=   35.0
+  pa /native n=  500 acc=0.4940 unparsed=  14   22.4s  gpu_s/1k=   44.8
+  ta /native n=  500 acc=0.6240 unparsed=  18   18.8s  gpu_s/1k=   37.6
+  te /native n=  500 acc=0.4660 unparsed=  37   18.6s  gpu_s/1k=   37.2
+  en /native n=  500 acc=0.6680 unparsed=  12   18.2s  gpu_s/1k=   36.4
+=== gpu4 Qwen3-14B-Instruct arc 19:09:00 ===
+  hi /native n=  500 acc=0.8200 unparsed=   0   11.0s  gpu_s/1k=   22.1
+  bn /native n=  500 acc=0.7780 unparsed=   0   15.5s  gpu_s/1k=   31.0
+  pa /native n=  500 acc=0.7340 unparsed=   1   21.7s  gpu_s/1k=   43.4
+  ta /native n=  500 acc=0.7040 unparsed=   0   17.0s  gpu_s/1k=   34.0
+  te /native n=  500 acc=0.7280 unparsed=   2   20.6s  gpu_s/1k=   41.2
+  en /native n=  500 acc=0.9240 unparsed=   0    8.3s  gpu_s/1k=   16.6
+=== gpu4 Qwen3-30B-A3B arc 19:11:24 ===
+  hi /native n=  500 acc=0.6000 unparsed= 143   13.8s  gpu_s/1k=   27.7
+  bn /native n=  500 acc=0.4960 unparsed= 188   15.2s  gpu_s/1k=   30.5
+  pa /native n=  500 acc=0.1720 unparsed= 387   15.8s  gpu_s/1k=   31.7
+  ta /native n=  500 acc=0.3580 unparsed= 277   15.7s  gpu_s/1k=   31.4
+  te /native n=  500 acc=0.1620 unparsed= 387   28.0s  gpu_s/1k=   56.0
+  en /native n=  500 acc=0.9520 unparsed=   0   11.4s  gpu_s/1k=   22.9
+=== gpu4 Mistral-Small-3.2-24B arc 19:13:59 ===
+  hi /native n=  500 acc=0.8360 unparsed=   8   24.3s  gpu_s/1k=   48.6
+  bn /native n=  500 acc=0.8200 unparsed=   2   26.0s  gpu_s/1k=   51.9
+  pa /native n=  500 acc=0.7680 unparsed=   7   31.5s  gpu_s/1k=   62.9
+  ta /native n=  500 acc=0.8020 unparsed=   6   26.4s  gpu_s/1k=   52.7
+  te /native n=  500 acc=0.7720 unparsed=   8   18.3s  gpu_s/1k=   36.5
+  en /native n=  500 acc=0.9360 unparsed=   4   16.2s  gpu_s/1k=   32.4
+=== gpu4 gemma-2-27b-it arc 19:17:16 ===
+  hi /native n=  500 acc=0.8680 unparsed=   1   14.7s  gpu_s/1k=   29.5
+  bn /native n=  500 acc=0.8420 unparsed=   0   16.6s  gpu_s/1k=   33.2
+  pa /native n=  500 acc=0.8180 unparsed=   0   22.7s  gpu_s/1k=   45.3
+  ta /native n=  500 acc=0.8200 unparsed=   0   26.3s  gpu_s/1k=   52.5
+  te /native n=  500 acc=0.7840 unparsed=   0   24.3s  gpu_s/1k=   48.6
+  en /native n=  500 acc=0.9460 unparsed=   0   14.3s  gpu_s/1k=   28.6
+=== gpu4 Llama-3.1-8B-Instruct arc 19:20:24 ===
+  hi /native n=  500 acc=0.5660 unparsed=  49   10.2s  gpu_s/1k=   20.4
+  bn /native n=  500 acc=0.2540 unparsed= 253   18.0s  gpu_s/1k=   36.0
+  pa /native n=  500 acc=0.1240 unparsed= 379   20.2s  gpu_s/1k=   40.3
+  ta /native n=  500 acc=0.1540 unparsed= 336   20.1s  gpu_s/1k=   40.2
+  te /native n=  500 acc=0.1240 unparsed= 366   28.1s  gpu_s/1k=   56.1
+  en /native n=  500 acc=0.8760 unparsed=   3    7.2s  gpu_s/1k=   14.4
+=== gpu4 done 19:22:50 ===

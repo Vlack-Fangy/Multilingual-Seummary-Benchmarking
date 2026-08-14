@@ -1,0 +1,49 @@
+=== gpu1 Ministral-3-8B gsm8k 18:50:07 ===
+  hi /native n=  500 acc=0.6840 unparsed=   0    6.1s  gpu_s/1k=   12.1
+  hi /roman  n=  500 acc=0.4400 unparsed=   0    5.5s  gpu_s/1k=   11.0
+  bn /native n=  500 acc=0.6280 unparsed=   0    5.9s  gpu_s/1k=   11.8
+  bn /roman  n=  500 acc=0.1460 unparsed=   0    5.6s  gpu_s/1k=   11.2
+  pa /native n=  500 acc=0.5420 unparsed=   0    6.6s  gpu_s/1k=   13.3
+  pa /roman  n=  500 acc=0.2020 unparsed=   0    5.6s  gpu_s/1k=   11.2
+  ta /native n=  500 acc=0.5580 unparsed=   0    6.3s  gpu_s/1k=   12.5
+  ta /roman  n=  500 acc=0.0660 unparsed=   0    6.5s  gpu_s/1k=   13.0
+  te /native n=  500 acc=0.6320 unparsed=   0    6.4s  gpu_s/1k=   12.9
+  te /roman  n=  500 acc=0.0960 unparsed=   0   12.2s  gpu_s/1k=   24.5
+  en /native n=  500 acc=0.8280 unparsed=   0    7.9s  gpu_s/1k=   15.9
+=== gpu1 Ministral-3-8B mmlu 18:52:20 ===
+  hi /native n=  500 acc=0.6640 unparsed=   7    4.1s  gpu_s/1k=    8.2
+  hi /roman  n=  500 acc=0.5700 unparsed=  11    4.4s  gpu_s/1k=    8.9
+  bn /native n=  500 acc=0.6280 unparsed=   5    3.9s  gpu_s/1k=    7.7
+  bn /roman  n=  500 acc=0.4180 unparsed=  10    4.1s  gpu_s/1k=    8.3
+  pa /native n=  500 acc=0.6180 unparsed=   7    5.1s  gpu_s/1k=   10.3
+  pa /roman  n=  500 acc=0.4800 unparsed=   7    4.2s  gpu_s/1k=    8.4
+  ta /native n=  500 acc=0.5640 unparsed=   6    4.5s  gpu_s/1k=    8.9
+  ta /roman  n=  500 acc=0.3240 unparsed=  11    5.1s  gpu_s/1k=   10.2
+  te /native n=  500 acc=0.6380 unparsed=  21    5.1s  gpu_s/1k=   10.3
+  te /roman  n=  500 acc=0.4000 unparsed=  14    5.1s  gpu_s/1k=   10.2
+  en /native n=  500 acc=0.8380 unparsed=   1    3.4s  gpu_s/1k=    6.8
+=== gpu1 Ministral-3-14B gsm8k 18:53:53 ===
+  hi /native n=  500 acc=0.7880 unparsed=   0    9.3s  gpu_s/1k=   18.6
+  hi /roman  n=  500 acc=0.7700 unparsed=   0    9.8s  gpu_s/1k=   19.7
+  bn /native n=  500 acc=0.9000 unparsed=   0   10.0s  gpu_s/1k=   20.1
+  bn /roman  n=  500 acc=0.3600 unparsed=   0   11.1s  gpu_s/1k=   22.2
+  pa /native n=  500 acc=0.7920 unparsed=   0   11.2s  gpu_s/1k=   22.4
+  pa /roman  n=  500 acc=0.4640 unparsed=   0   19.8s  gpu_s/1k=   39.6
+  ta /native n=  500 acc=0.7900 unparsed=   0   10.4s  gpu_s/1k=   20.8
+  ta /roman  n=  500 acc=0.1460 unparsed=   0   22.0s  gpu_s/1k=   44.0
+  te /native n=  500 acc=0.8780 unparsed=   0   11.2s  gpu_s/1k=   22.3
+  te /roman  n=  500 acc=0.1960 unparsed=   0   20.8s  gpu_s/1k=   41.5
+  en /native n=  500 acc=0.9540 unparsed=   0    9.0s  gpu_s/1k=   18.0
+=== gpu1 Ministral-3-14B mmlu 18:57:25 ===
+  hi /native n=  500 acc=0.6720 unparsed=   3    6.4s  gpu_s/1k=   12.8
+  hi /roman  n=  500 acc=0.5940 unparsed=   8    6.6s  gpu_s/1k=   13.2
+  bn /native n=  500 acc=0.6660 unparsed=   9    6.5s  gpu_s/1k=   13.0
+  bn /roman  n=  500 acc=0.4340 unparsed=  11    7.4s  gpu_s/1k=   14.8
+  pa /native n=  500 acc=0.6580 unparsed=   8    7.7s  gpu_s/1k=   15.4
+  pa /roman  n=  500 acc=0.5100 unparsed=   7    8.8s  gpu_s/1k=   17.6
+  ta /native n=  500 acc=0.5860 unparsed=   8   13.6s  gpu_s/1k=   27.1
+  ta /roman  n=  500 acc=0.3460 unparsed=  15    8.3s  gpu_s/1k=   16.6
+  te /native n=  500 acc=0.6360 unparsed=  19    7.9s  gpu_s/1k=   15.8
+  te /roman  n=  500 acc=0.4120 unparsed=  10    8.3s  gpu_s/1k=   16.5
+  en /native n=  500 acc=0.8660 unparsed=   1    5.1s  gpu_s/1k=   10.3
+=== gpu1 done 18:59:43 ===

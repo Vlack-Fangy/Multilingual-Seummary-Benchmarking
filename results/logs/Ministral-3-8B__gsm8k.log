@@ -1,0 +1,28 @@
+GPU 1: 139/140 GiB free -> util=0.80
+WARNING 08-14 18:50:13 [system_utils.py:157] We must use the `spawn` multiprocessing start method. Overriding VLLM_WORKER_MULTIPROC_METHOD to 'spawn'. See https://docs.vllm.ai/en/latest/usage/troubleshooting.html#python-multiprocessing for more information. Reasons: CUDA is initialized
+(EngineCore pid=3758168) Loading safetensors checkpoint shards:   0% Completed | 0/4 [00:00<?, ?it/s]
+(EngineCore pid=3758168) Loading safetensors checkpoint shards:  25% Completed | 1/4 [00:00<00:01,  2.22it/s]
+(EngineCore pid=3758168) Loading safetensors checkpoint shards:  50% Completed | 2/4 [00:01<00:01,  1.87it/s]
+(EngineCore pid=3758168) Loading safetensors checkpoint shards:  75% Completed | 3/4 [00:01<00:00,  1.78it/s]
+(EngineCore pid=3758168) Loading safetensors checkpoint shards: 100% Completed | 4/4 [00:02<00:00,  2.03it/s]
+(EngineCore pid=3758168) Loading safetensors checkpoint shards: 100% Completed | 4/4 [00:02<00:00,  1.97it/s]
+(EngineCore pid=3758168) 
+(EngineCore pid=3758168) 2026-08-14 18:50:42,589 - INFO - autotuner.py:829 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+(EngineCore pid=3758168) 2026-08-14 18:50:42,607 - INFO - autotuner.py:852 - flashinfer.jit: [Autotuner]: Autotuning process ends
+(EngineCore pid=3758168) 2026-08-14 18:50:42,614 - INFO - autotuner.py:2269 - flashinfer.jit: [Autotuner]: Saved 0 configs to /home/harshal/.cache/vllm/flashinfer_autotune_cache/0.6.16.post3/90a/801256feb57f53926c40dc5a5127b8df85cb3106454dbb60d49e6b952c0a7108/autotune_configs.json (0 new, 0 from previous config)
+(EngineCore pid=3758168) Capturing CUDA graphs (PIECEWISE):   0%|          | 0/51 [00:00<?, ?it/s]Capturing CUDA graphs (PIECEWISE):   2%|▏         | 1/51 [00:00<00:05,  9.81it/s]Capturing CUDA graphs (PIECEWISE):   4%|▍         | 2/51 [00:00<00:08,  5.60it/s]Capturing CUDA graphs (PIECEWISE):   8%|▊         | 4/51 [00:00<00:05,  8.43it/s]Capturing CUDA graphs (PIECEWISE):  12%|█▏        | 6/51 [00:00<00:04, 10.46it/s]Capturing CUDA graphs (PIECEWISE):  16%|█▌        | 8/51 [00:00<00:03, 11.41it/s]Capturing CUDA graphs (PIECEWISE):  20%|█▉        | 10/51 [00:00<00:03, 12.55it/s]Capturing CUDA graphs (PIECEWISE):  24%|██▎       | 12/51 [00:01<00:03, 10.16it/s]Capturing CUDA graphs (PIECEWISE):  27%|██▋       | 14/51 [00:01<00:03, 10.54it/s]Capturing CUDA graphs (PIECEWISE):  31%|███▏      | 16/51 [00:01<00:03,  9.60it/s]Capturing CUDA graphs (PIECEWISE):  35%|███▌      | 18/51 [00:01<00:03,  9.92it/s]Capturing CUDA graphs (PIECEWISE):  39%|███▉      | 20/51 [00:01<00:02, 11.22it/s]Capturing CUDA graphs (PIECEWISE):  43%|████▎     | 22/51 [00:02<00:02, 12.48it/s]Capturing CUDA graphs (PIECEWISE):  47%|████▋     | 24/51 [00:02<00:02, 12.14it/s]Capturing CUDA graphs (PIECEWISE):  51%|█████     | 26/51 [00:02<00:02, 10.50it/s]Capturing CUDA graphs (PIECEWISE):  55%|█████▍    | 28/51 [00:02<00:02, 10.67it/s]Capturing CUDA graphs (PIECEWISE):  59%|█████▉    | 30/51 [00:02<00:01, 12.02it/s]Capturing CUDA graphs (PIECEWISE):  65%|██████▍   | 33/51 [00:02<00:01, 14.92it/s]Capturing CUDA graphs (PIECEWISE):  71%|███████   | 36/51 [00:03<00:00, 17.14it/s]Capturing CUDA graphs (PIECEWISE):  75%|███████▍  | 38/51 [00:03<00:00, 14.16it/s]Capturing CUDA graphs (PIECEWISE):  78%|███████▊  | 40/51 [00:03<00:00, 15.26it/s]Capturing CUDA graphs (PIECEWISE):  84%|████████▍ | 43/51 [00:03<00:00, 16.01it/s]Capturing CUDA graphs (PIECEWISE):  88%|████████▊ | 45/51 [00:03<00:00, 14.99it/s]Capturing CUDA graphs (PIECEWISE):  92%|█████████▏| 47/51 [00:03<00:00, 13.80it/s]Capturing CUDA graphs (PIECEWISE):  98%|█████████▊| 50/51 [00:03<00:00, 15.87it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 51/51 [00:04<00:00, 12.63it/s]
+(EngineCore pid=3758168) Capturing CUDA graphs (FULL):   0%|          | 0/51 [00:00<?, ?it/s]Capturing CUDA graphs (FULL):   8%|▊         | 4/51 [00:00<00:01, 35.77it/s]Capturing CUDA graphs (FULL):  16%|█▌        | 8/51 [00:00<00:01, 31.27it/s]Capturing CUDA graphs (FULL):  24%|██▎       | 12/51 [00:00<00:01, 26.51it/s]Capturing CUDA graphs (FULL):  33%|███▎      | 17/51 [00:00<00:01, 32.65it/s]Capturing CUDA graphs (FULL):  45%|████▌     | 23/51 [00:00<00:00, 39.50it/s]Capturing CUDA graphs (FULL):  57%|█████▋    | 29/51 [00:00<00:00, 44.59it/s]Capturing CUDA graphs (FULL):  71%|███████   | 36/51 [00:00<00:00, 51.23it/s]Capturing CUDA graphs (FULL):  84%|████████▍ | 43/51 [00:00<00:00, 55.81it/s]Capturing CUDA graphs (FULL): 100%|██████████| 51/51 [00:01<00:00, 61.23it/s]Capturing CUDA graphs (FULL): 100%|██████████| 51/51 [00:01<00:00, 47.43it/s]
+loaded Ministral-3-8B in 43s
+  hi /native n=  500 acc=0.6840 unparsed=   0    6.1s  gpu_s/1k=   12.1
+  hi /roman  n=  500 acc=0.4400 unparsed=   0    5.5s  gpu_s/1k=   11.0
+  bn /native n=  500 acc=0.6280 unparsed=   0    5.9s  gpu_s/1k=   11.8
+  bn /roman  n=  500 acc=0.1460 unparsed=   0    5.6s  gpu_s/1k=   11.2
+  pa /native n=  500 acc=0.5420 unparsed=   0    6.6s  gpu_s/1k=   13.3
+  pa /roman  n=  500 acc=0.2020 unparsed=   0    5.6s  gpu_s/1k=   11.2
+  ta /native n=  500 acc=0.5580 unparsed=   0    6.3s  gpu_s/1k=   12.5
+  ta /roman  n=  500 acc=0.0660 unparsed=   0    6.5s  gpu_s/1k=   13.0
+  te /native n=  500 acc=0.6320 unparsed=   0    6.4s  gpu_s/1k=   12.9
+  te /roman  n=  500 acc=0.0960 unparsed=   0   12.2s  gpu_s/1k=   24.5
+  en /native n=  500 acc=0.8280 unparsed=   0    7.9s  gpu_s/1k=   15.9
+
+wrote /home/harshal/multilingual-summ-bench/results/exact/Ministral-3-8B__gsm8k.jsonl

@@ -39,3 +39,11 @@ WARNING 08-14 18:23:49 [system_utils.py:157] We must use the `spawn` multiproces
 loaded sarvam-30b in 36s
   hi /native n=  500 acc=0.7640 unparsed=  12   11.8s  gpu_s/1k=   23.6
 WARNING 08-14 18:25:09 [detokenizer.py:239] Encountered invalid prefix detokenization error for request 802-88831ed8, resetting decode stream.
+  bn /native n=  500 acc=0.7080 unparsed=  10   11.7s  gpu_s/1k=   23.5
+  pa /native n=  500 acc=0.6800 unparsed=  14   11.3s  gpu_s/1k=   22.7
+  ta /native n=  500 acc=0.6180 unparsed=  50   12.2s  gpu_s/1k=   24.4
+  te /native n=  500 acc=0.6780 unparsed=  14   12.3s  gpu_s/1k=   24.7
+  en /native n=  500 acc=0.7940 unparsed=   3   10.9s  gpu_s/1k=   21.8
+
+wrote /home/harshal/multilingual-summ-bench/results/exact/sarvam-30b__triviaqa.jsonl
+WARNING 08-14 18:26:47 [core_client.py:725] [shutdown] MPClient: engine core exited unexpectedly; starting cleanup

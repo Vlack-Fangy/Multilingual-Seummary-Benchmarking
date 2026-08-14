@@ -1,1 +1,43 @@
 === gpu4 sarvam-30b triviaqa 18:23:40 ===
+  hi /native n=  500 acc=0.7640 unparsed=  12   11.8s  gpu_s/1k=   23.6
+  bn /native n=  500 acc=0.7080 unparsed=  10   11.7s  gpu_s/1k=   23.5
+  pa /native n=  500 acc=0.6800 unparsed=  14   11.3s  gpu_s/1k=   22.7
+  ta /native n=  500 acc=0.6180 unparsed=  50   12.2s  gpu_s/1k=   24.4
+  te /native n=  500 acc=0.6780 unparsed=  14   12.3s  gpu_s/1k=   24.7
+  en /native n=  500 acc=0.7940 unparsed=   3   10.9s  gpu_s/1k=   21.8
+=== gpu4 gemma-4-12B-it triviaqa 18:26:50 ===
+  hi /native n=  500 acc=0.8180 unparsed=   5   20.5s  gpu_s/1k=   41.1
+  bn /native n=  500 acc=0.7940 unparsed=   7   20.0s  gpu_s/1k=   40.0
+  pa /native n=  500 acc=0.7980 unparsed=   6   24.0s  gpu_s/1k=   48.0
+  ta /native n=  500 acc=0.7580 unparsed=   5   21.8s  gpu_s/1k=   43.7
+  te /native n=  500 acc=0.7760 unparsed=   9   20.7s  gpu_s/1k=   41.3
+  en /native n=  500 acc=0.8560 unparsed=  15   17.7s  gpu_s/1k=   35.4
+=== gpu4 Qwen3-14B-Instruct triviaqa 18:30:51 ===
+  hi /native n=  500 acc=0.8300 unparsed=   1    7.3s  gpu_s/1k=   14.6
+  bn /native n=  500 acc=0.8320 unparsed=   0    7.6s  gpu_s/1k=   15.2
+  pa /native n=  500 acc=0.8120 unparsed=   0    9.3s  gpu_s/1k=   18.6
+  ta /native n=  500 acc=0.7660 unparsed=   0    8.4s  gpu_s/1k=   16.8
+  te /native n=  500 acc=0.7840 unparsed=   0   10.3s  gpu_s/1k=   20.6
+  en /native n=  500 acc=0.9220 unparsed=   1    3.8s  gpu_s/1k=    7.6
+=== gpu4 Mistral-Small-3.2-24B triviaqa 18:32:29 ===
+  hi /native n=  500 acc=0.8700 unparsed=   2   20.3s  gpu_s/1k=   40.5
+  bn /native n=  500 acc=0.9020 unparsed=   3   21.0s  gpu_s/1k=   42.0
+  pa /native n=  500 acc=0.8760 unparsed=   5   23.1s  gpu_s/1k=   46.1
+  ta /native n=  500 acc=0.8340 unparsed=   4   23.1s  gpu_s/1k=   46.2
+  te /native n=  500 acc=0.8920 unparsed=   3   23.1s  gpu_s/1k=   46.3
+  en /native n=  500 acc=0.9320 unparsed=   1   17.7s  gpu_s/1k=   35.4
+=== gpu4 gemma-2-27b-it triviaqa 18:35:48 ===
+  hi /native n=  500 acc=0.8180 unparsed=   1   11.6s  gpu_s/1k=   23.2
+  bn /native n=  500 acc=0.8100 unparsed=   1   11.8s  gpu_s/1k=   23.6
+  pa /native n=  500 acc=0.8000 unparsed=   1   15.3s  gpu_s/1k=   30.7
+  ta /native n=  500 acc=0.7840 unparsed=   1   13.1s  gpu_s/1k=   26.3
+  te /native n=  500 acc=0.7800 unparsed=   2   14.2s  gpu_s/1k=   28.4
+  en /native n=  500 acc=0.9140 unparsed=   5    8.8s  gpu_s/1k=   17.7
+=== gpu4 Llama-3.1-8B-Instruct triviaqa 18:38:07 ===
+  hi /native n=  500 acc=0.5960 unparsed=  73    8.2s  gpu_s/1k=   16.4
+  bn /native n=  500 acc=0.4460 unparsed= 148   12.2s  gpu_s/1k=   24.5
+  pa /native n=  500 acc=0.3500 unparsed= 223   14.1s  gpu_s/1k=   28.3
+  ta /native n=  500 acc=0.4120 unparsed= 204   13.0s  gpu_s/1k=   25.9
+  te /native n=  500 acc=0.4080 unparsed= 186   14.1s  gpu_s/1k=   28.3
+  en /native n=  500 acc=0.8900 unparsed=  12    6.7s  gpu_s/1k=   13.3
+=== gpu4 done 18:39:58 ===
