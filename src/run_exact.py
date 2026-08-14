@@ -64,19 +64,39 @@ def load_split(task, lang, script):
     import pandas as pd
     from huggingface_hub import hf_hub_download
     cfg = f"{lang}_roman" if script == "roman" else lang
-    p = hf_hub_download(TASKS[task]["repo"], f"{cfg}/test-00000-of-00001.parquet",
-                        repo_type="dataset")
-    return pd.read_parquet(p).to_dict("records")
+    # trivia-qa-indic-mcq ships only a validation split; the others ship test.
+    last = None
+    for split in ("test", "validation"):
+        try:
+            p = hf_hub_download(TASKS[task]["repo"], f"{cfg}/{split}-00000-of-00001.parquet",
+                                repo_type="dataset")
+            return pd.read_parquet(p).to_dict("records")
+        except Exception as e:
+            last = e
+    raise last
 
 
 def build(task, row):
     """(prompt, gold) for one item."""
     kind = TASKS[task]["kind"]
     if kind == "mcq":
-        choices = list(row["choices"])
-        opts = "\n".join(f"{LETTERS[i]}. {c}" for i, c in enumerate(choices))
-        gold = LETTERS[int(row["answer"])]
-        return MCQ_PROMPT.format(question=row["question"], options=opts), gold, len(choices)
+        # Sarvam's MCQ sets are not schema-consistent:
+        #   mmlu / trivia-qa : choices = array,                 answer    = index
+        #   arc-challenge    : choices = {label[], text[]},     answerKey = letter
+        ch = row["choices"]
+        try:                      # arc: {label: [...], text: [...]}
+            labels, texts = list(ch["label"]), list(ch["text"])
+        except (KeyError, IndexError, TypeError, ValueError):
+            labels, texts = None, list(ch)   # mmlu / trivia-qa: plain array
+        opts = "\n".join(f"{LETTERS[i]}. {t}" for i, t in enumerate(texts))
+        if "answerKey" in row:
+            key = str(row["answerKey"]).strip()
+            # Some rows label options 1-4 rather than A-D.
+            gold = key if key in LETTERS else (
+                LETTERS[labels.index(key)] if labels and key in labels else None)
+        else:
+            gold = LETTERS[int(row["answer"])]
+        return MCQ_PROMPT.format(question=row["question"], options=opts), gold, len(texts)
     # gsm8k gold lives in the English CoT as "#### <number>"
     m = re.search(r"####\s*([\-0-9.,]+)", row["answer"])
     gold = m.group(1).replace(",", "").strip(".") if m else None
@@ -220,6 +240,10 @@ def main():
                     "model": args.model, "family": spec["family"], "band": spec["band"],
                     "task": args.task, "lang": lang, "script": script,
                     "gold": g, "pred": pred, "correct": int(ok),
+                    # Raw text kept so the pipeline can be audited by eye: accuracy
+                    # alone cannot tell a correct answer from a lucky parse, nor
+                    # spot a chat template rendering badly but not fatally.
+                    "gen": text[:1200],
                     "gen_tokens": len(o.outputs[0].token_ids),
                     "finish_reason": o.outputs[0].finish_reason,
                 }, ensure_ascii=False) + "\n")

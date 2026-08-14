@@ -1,1 +1,73 @@
 === gpu4 sarvam-30b arc 18:05:57 ===
+FAILED sarvam-30b/arc
+                       ~~~^^^^^^^^^^
+KeyError: 'answer'
+WARNING 08-14 18:07:41 [core_client.py:725] [shutdown] MPClient: engine core exited unexpectedly; starting cleanup
+=== gpu4 sarvam-30b triviaqa 18:07:43 ===
+  hi/native: SKIP (RemoteEntryNotFoundError)
+  bn/native: SKIP (RemoteEntryNotFoundError)
+  pa/native: SKIP (RemoteEntryNotFoundError)
+  ta/native: SKIP (RemoteEntryNotFoundError)
+  te/native: SKIP (RemoteEntryNotFoundError)
+  en/native: SKIP (RemoteEntryNotFoundError)
+=== gpu4 Qwen3-14B-Instruct arc 18:08:51 ===
+FAILED Qwen3-14B-Instruct/arc
+                       ~~~^^^^^^^^^^
+KeyError: 'answer'
+WARNING 08-14 18:10:01 [core_client.py:725] [shutdown] MPClient: engine core exited unexpectedly; starting cleanup
+=== gpu4 Qwen3-14B-Instruct triviaqa 18:10:03 ===
+  hi/native: SKIP (RemoteEntryNotFoundError)
+  bn/native: SKIP (RemoteEntryNotFoundError)
+  pa/native: SKIP (RemoteEntryNotFoundError)
+  ta/native: SKIP (RemoteEntryNotFoundError)
+  te/native: SKIP (RemoteEntryNotFoundError)
+  en/native: SKIP (RemoteEntryNotFoundError)
+=== gpu4 Mistral-Small-3.2-24B arc 18:10:49 ===
+FAILED Mistral-Small-3.2-24B/arc
+                       ~~~^^^^^^^^^^
+KeyError: 'answer'
+WARNING 08-14 18:12:03 [core_client.py:725] [shutdown] MPClient: engine core exited unexpectedly; starting cleanup
+=== gpu4 Mistral-Small-3.2-24B triviaqa 18:12:05 ===
+  hi/native: SKIP (RemoteEntryNotFoundError)
+  bn/native: SKIP (RemoteEntryNotFoundError)
+  pa/native: SKIP (RemoteEntryNotFoundError)
+  ta/native: SKIP (RemoteEntryNotFoundError)
+  te/native: SKIP (RemoteEntryNotFoundError)
+  en/native: SKIP (RemoteEntryNotFoundError)
+=== gpu4 gemma-2-27b-it arc 18:13:07 ===
+FAILED gemma-2-27b-it/arc
+                       ~~~^^^^^^^^^^
+KeyError: 'answer'
+WARNING 08-14 18:14:21 [core_client.py:725] [shutdown] MPClient: engine core exited unexpectedly; starting cleanup
+=== gpu4 gemma-2-27b-it triviaqa 18:14:23 ===
+  hi/native: SKIP (RemoteEntryNotFoundError)
+  bn/native: SKIP (RemoteEntryNotFoundError)
+  pa/native: SKIP (RemoteEntryNotFoundError)
+  ta/native: SKIP (RemoteEntryNotFoundError)
+  te/native: SKIP (RemoteEntryNotFoundError)
+  en/native: SKIP (RemoteEntryNotFoundError)
+=== gpu4 Qwen3-30B-A3B arc 18:15:19 ===
+FAILED Qwen3-30B-A3B/arc
+                       ~~~^^^^^^^^^^
+KeyError: 'answer'
+WARNING 08-14 18:16:38 [core_client.py:725] [shutdown] MPClient: engine core exited unexpectedly; starting cleanup
+=== gpu4 Qwen3-30B-A3B triviaqa 18:16:40 ===
+  hi/native: SKIP (RemoteEntryNotFoundError)
+  bn/native: SKIP (RemoteEntryNotFoundError)
+  pa/native: SKIP (RemoteEntryNotFoundError)
+  ta/native: SKIP (RemoteEntryNotFoundError)
+  te/native: SKIP (RemoteEntryNotFoundError)
+  en/native: SKIP (RemoteEntryNotFoundError)
+=== gpu4 Llama-3.1-8B-Instruct arc 18:17:29 ===
+FAILED Llama-3.1-8B-Instruct/arc
+                       ~~~^^^^^^^^^^
+KeyError: 'answer'
+WARNING 08-14 18:18:11 [core_client.py:725] [shutdown] MPClient: engine core exited unexpectedly; starting cleanup
+=== gpu4 Llama-3.1-8B-Instruct triviaqa 18:18:14 ===
+  hi/native: SKIP (RemoteEntryNotFoundError)
+  bn/native: SKIP (RemoteEntryNotFoundError)
+  pa/native: SKIP (RemoteEntryNotFoundError)
+  ta/native: SKIP (RemoteEntryNotFoundError)
+  te/native: SKIP (RemoteEntryNotFoundError)
+  en/native: SKIP (RemoteEntryNotFoundError)
+=== gpu4 done 18:18:54 ===

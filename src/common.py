@@ -183,40 +183,61 @@ SCRIPT_RANGES = {
 _URLISH = re.compile(r"(https?://\S+|www\.\S+|\S+@\S+\.\S+|\b\S+\.(?:com|org|net|co\.uk|in)\b/?\S*)",
                      re.IGNORECASE)
 
+# Brand names and acronyms are Latin by convention in every language — "FACEBOOK",
+# "YouTube", "iPhone" say nothing about the script the model chose. They are dense
+# enough in BBC copy to flip a short Gurmukhi reply to "Latin" on character count.
+# Romanized Indic text is written in ordinary lowercase, so removing ALL-CAPS and
+# CamelCase tokens cannot hide genuine romanization.
+_BRANDISH = re.compile(r"\b(?:[A-Z]{2,}|[A-Za-z]+[A-Z][A-Za-z]*)\b")
+
 
 def script_profile(text):
     """Fraction of alphabetic characters falling in each script. Digits, spaces and
     punctuation are excluded: they are script-neutral and would dilute the signal."""
-    text = _URLISH.sub(" ", text)
+    text = _BRANDISH.sub(" ", _URLISH.sub(" ", text))
     counts = {k: 0 for k in SCRIPT_RANGES}
     total = 0
     for ch in text:
-        if not ch.isalpha():
+        # NOT isalpha(): Indic vowel signs, virama and anusvara (U+093E etc) are
+        # combining marks in category Mn/Mc, for which isalpha() is False. Filtering
+        # on it dropped roughly a third of every Devanagari/Bengali/Tamil string and
+        # biased the whole profile toward Latin. Membership of a script's codepoint
+        # range is the right test; digits, spaces and punctuation fall outside all
+        # ranges and are skipped anyway.
+        if ch.isspace() or ch.isdigit():
             continue
-        total += 1
         cp = ord(ch)
         for name, ranges in SCRIPT_RANGES.items():
             if any(lo <= cp <= hi for lo, hi in ranges):
                 counts[name] += 1
+                total += 1
                 break
     if not total:
         return {k: 0.0 for k in counts}, 0
     return {k: v / total for k, v in counts.items()}, total
 
 
-def classify_script(text, expected, romanized_ok=False, threshold=0.85):
+def classify_script(text, expected, romanized_ok=False, threshold=0.60):
     """Label what script a model actually replied in.
 
     Returns one of: expected script name, "Latin", "mixed", "empty".
     Whether a model complies with the requested script is a measured result of
     this study, not an assumption, so this runs on every generation.
+
+    Dominance, not purity. Correct Indic writing routinely embeds Latin brand
+    names, loanwords and glosses — "नए iPhone 11 Pro लॉन्च", "अवसाद (postpartum
+    depression)". An 85% purity rule marked those as "mixed", which would
+    under-count compliance, and would do so hardest in the romanized condition
+    where loanword density is highest — biasing the very comparison T3 exists to
+    make. A reply is in the expected script when that script dominates.
     """
     prof, total = script_profile(text)
     if total < 5:
         return "empty"
-    if prof.get(expected, 0) >= threshold:
+    exp, lat = prof.get(expected, 0.0), prof.get("Latin", 0.0)
+    if expected != "Latin" and exp >= threshold and exp > lat:
         return expected
-    if prof.get("Latin", 0) >= threshold:
+    if lat >= threshold and lat > exp:
         return "Latin"
     return "mixed"
 

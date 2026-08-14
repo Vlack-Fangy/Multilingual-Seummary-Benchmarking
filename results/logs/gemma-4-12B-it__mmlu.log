@@ -17,3 +17,17 @@ WARNING 08-14 18:04:27 [system_utils.py:157] We must use the `spawn` multiproces
 (EngineCore pid=3695185) Capturing CUDA graphs (FULL):  82%|████████▏ | 42/51 [00:04<00:02,  3.48it/s]Capturing CUDA graphs (FULL):  92%|█████████▏| 47/51 [00:05<00:00,  5.21it/s]Capturing CUDA graphs (FULL):  98%|█████████▊| 50/51 [00:09<00:00,  2.09it/s]Capturing CUDA graphs (FULL): 100%|██████████| 51/51 [00:09<00:00,  5.47it/s]
 WARNING 08-14 18:05:29 [base.py:269] Multi-modal warmup failed
 WARNING 08-14 18:05:29 [base.py:281] Readonly multi-modal warmup failed
+loaded gemma-4-12B-it in 85s
+  hi /native n=  500 acc=0.7080 unparsed=  16   12.5s  gpu_s/1k=   24.9
+  hi /roman  n=  500 acc=0.6520 unparsed=  20   13.9s  gpu_s/1k=   27.9
+  bn /native n=  500 acc=0.6900 unparsed=  10   12.1s  gpu_s/1k=   24.2
+  bn /roman  n=  500 acc=0.5500 unparsed=  32   14.9s  gpu_s/1k=   29.8
+  pa /native n=  500 acc=0.6540 unparsed=  13   16.4s  gpu_s/1k=   32.8
+  pa /roman  n=  500 acc=0.5720 unparsed=  16   14.4s  gpu_s/1k=   28.8
+  ta /native n=  500 acc=0.6460 unparsed=  13   17.0s  gpu_s/1k=   34.0
+  ta /roman  n=  500 acc=0.4760 unparsed=  18   18.9s  gpu_s/1k=   37.8
+  te /native n=  500 acc=0.6680 unparsed=  16   13.4s  gpu_s/1k=   26.7
+  te /roman  n=  500 acc=0.5380 unparsed=  22   15.5s  gpu_s/1k=   31.0
+  en /native n=  500 acc=0.8040 unparsed=   9   12.0s  gpu_s/1k=   23.9
+
+wrote /home/harshal/multilingual-summ-bench/results/exact/gemma-4-12B-it__mmlu.jsonl

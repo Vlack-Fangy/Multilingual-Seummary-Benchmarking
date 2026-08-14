@@ -13,3 +13,7 @@ Still waiting to acquire lock on /home/models/sarvam-m/.cache/huggingface/.gitig
 path=/home/models/sarvam-m
 44G	/home/models/sarvam-m
 === google/gemma-4-26B-A4B-it -> /home/models/gemma-4-26B-A4B-it  18:05:56 ===
+Still waiting to acquire lock on /home/models/gemma-4-26B-A4B-it/.cache/huggingface/download/model-00001-of-00002.safetensors.lock (elapsed: 651.2 seconds)
+path=/home/models/gemma-4-26B-A4B-it
+49G	/home/models/gemma-4-26B-A4B-it
+=== google/gemma-4-31B-it -> /home/models/gemma-4-31B-it  18:16:55 ===
