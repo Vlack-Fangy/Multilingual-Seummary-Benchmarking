@@ -77,6 +77,47 @@ MODELS = {
     "Mistral-7B-Instr-v0.3": dict(
         path="/home/models/Mistral-7B-Instruct-v0.3", family="Mistral", band="7-12B",
         vllm=dict(dtype="bfloat16")),
+
+    # ---- phase 2 additions ----
+    # Gemma 4 has configurable thinking; NO_THINK is passed defensively because an
+    # unnoticed thinking mode is what made Sarvam emit <think> on 20/20 items.
+    "gemma-4-12B-it": dict(
+        path="/home/models/gemma-4-12B-it", family="Gemma", band="7-12B",
+        vllm=dict(dtype="bfloat16"), chat_kwargs=NO_THINK),
+    "gemma-4-26B-A4B-it": dict(
+        path="/home/models/gemma-4-26B-A4B-it", family="Gemma", band="21-32B",
+        vllm=dict(dtype="bfloat16"), chat_kwargs=NO_THINK),
+    "gemma-4-31B-it": dict(
+        path="/home/models/gemma-4-31B-it", family="Gemma", band="21-32B",
+        vllm=dict(dtype="bfloat16"), chat_kwargs=NO_THINK),
+    "gemma-3-27b-it": dict(
+        path="/home/models/gemma-3-27b-it", family="Gemma", band="21-32B",
+        vllm=dict(dtype="bfloat16")),
+    # BF16 repos: the default Ministral-3 releases are natively FP8, which would
+    # confound the Mistral arm against an otherwise bf16 field.
+    "Ministral-3-8B": dict(
+        path="/home/models/Ministral-3-8B-Instruct-2512-BF16", family="Mistral", band="7-12B",
+        vllm=dict(dtype="bfloat16", tokenizer_mode="mistral", config_format="mistral",
+                  load_format="mistral")),
+    "Ministral-3-14B": dict(
+        path="/home/models/Ministral-3-14B-Instruct-2512-BF16", family="Mistral", band="13-20B",
+        vllm=dict(dtype="bfloat16", tokenizer_mode="mistral", config_format="mistral",
+                  load_format="mistral")),
+    "sarvam-m": dict(
+        path="/home/models/sarvam-m", family="Sarvam", band="21-32B",
+        vllm=dict(dtype="bfloat16"), chat_kwargs=NO_THINK),
+    "aya-expanse-8b": dict(
+        path="/home/models/aya-expanse-8b", family="Cohere", band="7-12B",
+        vllm=dict(dtype="bfloat16")),
+    "aya-expanse-32b": dict(
+        path="/home/models/aya-expanse-32b", family="Cohere", band="21-32B",
+        vllm=dict(dtype="bfloat16")),
+    "OLMo-3.1-32B-Think": dict(
+        path="/home/models/OLMo-3.1-32B-Think", family="AI2", band="21-32B",
+        vllm=dict(dtype="bfloat16")),
+    "bloomz-7b1": dict(
+        path="/home/models/bloomz-7b1", family="BigScience", band="7-12B",
+        vllm=dict(dtype="bfloat16")),
 }
 
 

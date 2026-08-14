@@ -1,0 +1,10 @@
+# Inference env (conda env `msb`, python 3.12)
+vllm==0.27.0
+# transformers 5.15.0 (released 2026-08-10) added a per-layer attribute guard that
+# raises AmbiguousGlobalPerLayerAttributeError on every Gemma 4 config, blocking the
+# whole family. vLLM 0.27.0 only pins transformers>=5.5.3, so a fresh install picks
+# up the broken release. 5.14.1 loads Gemma 4 correctly.
+transformers==5.14.1
+pandas
+pyarrow
+ninja

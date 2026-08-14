@@ -35,3 +35,39 @@
   te /roman  n=  500 acc=0.1800 unparsed=   0   11.8s  gpu_s/1k=   23.6
   en /native n=  500 acc=0.9560 unparsed=   0    7.1s  gpu_s/1k=   14.3
 === gpu1 Qwen3-30B-A3B mmlu 17:39:53 ===
+  hi /native n=  500 acc=0.5080 unparsed= 108    8.4s  gpu_s/1k=   16.7
+  hi /roman  n=  500 acc=0.5540 unparsed=  17    6.4s  gpu_s/1k=   12.7
+  bn /native n=  500 acc=0.4160 unparsed= 161    8.6s  gpu_s/1k=   17.3
+  bn /roman  n=  500 acc=0.4260 unparsed=  17    7.0s  gpu_s/1k=   13.9
+  pa /native n=  500 acc=0.2180 unparsed= 300    9.8s  gpu_s/1k=   19.7
+  pa /roman  n=  500 acc=0.4560 unparsed=  13    6.8s  gpu_s/1k=   13.6
+  ta /native n=  500 acc=0.2920 unparsed= 221   11.9s  gpu_s/1k=   23.7
+  ta /roman  n=  500 acc=0.3500 unparsed=  10   13.3s  gpu_s/1k=   26.5
+  te /native n=  500 acc=0.2440 unparsed= 301   10.1s  gpu_s/1k=   20.1
+  te /roman  n=  500 acc=0.4240 unparsed=   7    7.9s  gpu_s/1k=   15.7
+  en /native n=  500 acc=0.8840 unparsed=   0    4.7s  gpu_s/1k=    9.4
+=== gpu1 gemma-2-27b-it gsm8k 17:42:19 ===
+  hi /native n=  500 acc=0.8660 unparsed=   0   16.3s  gpu_s/1k=   32.5
+  hi /roman  n=  500 acc=0.7740 unparsed=   0   15.0s  gpu_s/1k=   30.0
+  bn /native n=  500 acc=0.8660 unparsed=   0   19.2s  gpu_s/1k=   38.3
+  bn /roman  n=  500 acc=0.5620 unparsed=   1   19.4s  gpu_s/1k=   38.9
+  pa /native n=  500 acc=0.8460 unparsed=   0   26.4s  gpu_s/1k=   52.8
+  pa /roman  n=  500 acc=0.6060 unparsed=   1   25.5s  gpu_s/1k=   51.0
+  ta /native n=  500 acc=0.8460 unparsed=   1   27.7s  gpu_s/1k=   55.5
+  ta /roman  n=  500 acc=0.3420 unparsed=   0   24.7s  gpu_s/1k=   49.4
+  te /native n=  500 acc=0.8480 unparsed=   0   21.4s  gpu_s/1k=   42.9
+  te /roman  n=  500 acc=0.3220 unparsed=   1   20.2s  gpu_s/1k=   40.3
+  en /native n=  500 acc=0.9100 unparsed=   0   18.9s  gpu_s/1k=   37.8
+=== gpu1 gemma-2-27b-it mmlu 17:47:31 ===
+  hi /native n=  500 acc=0.6920 unparsed=   1   11.3s  gpu_s/1k=   22.5
+  hi /roman  n=  500 acc=0.5720 unparsed=   0   10.9s  gpu_s/1k=   21.9
+  bn /native n=  500 acc=0.6300 unparsed=   2   12.5s  gpu_s/1k=   25.0
+  bn /roman  n=  500 acc=0.4800 unparsed=   9   11.8s  gpu_s/1k=   23.6
+  pa /native n=  500 acc=0.5840 unparsed=   1   22.7s  gpu_s/1k=   45.3
+  pa /roman  n=  500 acc=0.5460 unparsed=   3   11.3s  gpu_s/1k=   22.5
+  ta /native n=  500 acc=0.5460 unparsed=   1   22.0s  gpu_s/1k=   44.0
+  ta /roman  n=  500 acc=0.4040 unparsed=   0   11.4s  gpu_s/1k=   22.8
+  te /native n=  500 acc=0.6060 unparsed=   1   13.5s  gpu_s/1k=   27.0
+  te /roman  n=  500 acc=0.4600 unparsed=   4   20.6s  gpu_s/1k=   41.2
+  en /native n=  500 acc=0.8680 unparsed=   1    9.6s  gpu_s/1k=   19.2
+=== gpu1 done 17:51:11 ===
