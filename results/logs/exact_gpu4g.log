@@ -1,0 +1,25 @@
+=== gpu4 OLMo-3.1-32B-Think gsm8k 19:30:56 ===
+  hi /native n=  500 acc=0.8840 unparsed=   0  447.4s  gpu_s/1k=  894.9
+  hi /roman  n=  500 acc=0.6980 unparsed=   0  440.5s  gpu_s/1k=  880.9
+  bn /native n=  500 acc=0.8220 unparsed=   0  497.5s  gpu_s/1k=  995.1
+  bn /roman  n=  500 acc=0.2280 unparsed=   0 1009.2s  gpu_s/1k= 2018.5
+  pa /native n=  500 acc=0.8260 unparsed=   0  616.8s  gpu_s/1k= 1233.5
+  pa /roman  n=  500 acc=0.3900 unparsed=   0  880.7s  gpu_s/1k= 1761.3
+  ta /native n=  500 acc=0.7340 unparsed=   0  666.2s  gpu_s/1k= 1332.4
+  ta /roman  n=  500 acc=0.0980 unparsed=   0 1271.6s  gpu_s/1k= 2543.1
+  te /native n=  500 acc=0.6880 unparsed=   0  669.8s  gpu_s/1k= 1339.7
+  te /roman  n=  500 acc=0.1460 unparsed=   0 1104.4s  gpu_s/1k= 2208.8
+  en /native n=  500 acc=0.9540 unparsed=   0  248.8s  gpu_s/1k=  497.7
+=== gpu4 OLMo-3.1-32B-Think mmlu 21:42:54 ===
+  hi /native n=  500 acc=0.6200 unparsed=   1  376.8s  gpu_s/1k=  753.7
+  hi /roman  n=  500 acc=0.5660 unparsed=   1  387.8s  gpu_s/1k=  775.7
+  bn /native n=  500 acc=0.5880 unparsed=   1  427.6s  gpu_s/1k=  855.3
+  bn /roman  n=  500 acc=0.4180 unparsed=   1  435.0s  gpu_s/1k=  869.9
+  pa /native n=  500 acc=0.5560 unparsed=   1  469.6s  gpu_s/1k=  939.2
+  pa /roman  n=  500 acc=0.4820 unparsed=   1  416.3s  gpu_s/1k=  832.7
+  ta /native n=  500 acc=0.5140 unparsed=   0  476.5s  gpu_s/1k=  953.0
+  ta /roman  n=  500 acc=0.3240 unparsed=   1  457.5s  gpu_s/1k=  915.0
+  te /native n=  500 acc=0.5700 unparsed=   1  479.4s  gpu_s/1k=  958.8
+  te /roman  n=  500 acc=0.3980 unparsed=   1  452.8s  gpu_s/1k=  905.5
+  en /native n=  500 acc=0.8340 unparsed=   4  251.4s  gpu_s/1k=  502.8
+=== gpu4 done 23:01:10 ===

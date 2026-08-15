@@ -115,9 +115,15 @@ MODELS = {
     "aya-expanse-32b": dict(
         path="/home/models/aya-expanse-32b", family="Cohere", band="21-32B",
         vllm=dict(dtype="bfloat16")),
+    # OLMo-3.1-*-Think hard-codes an OPEN <think> tag into the generation prompt
+    # ("<|im_start|>assistant\n<think>") with no toggle, so every reply begins
+    # inside a reasoning block. At the normal 512-token cap the reasoning consumes
+    # the budget and the answer is truncated — that measures truncation, not
+    # ability. gen_budget widens the cap. thinking_only marks it for reporting as a
+    # labelled separate entry: it cannot sit in a ranking of non-thinking models.
     "OLMo-3.1-32B-Think": dict(
         path="/home/models/OLMo-3.1-32B-Think", family="AI2", band="21-32B",
-        vllm=dict(dtype="bfloat16")),
+        vllm=dict(dtype="bfloat16"), gen_budget=6, thinking_only=True),
     # BharatGen Param2: 17B total / 2.4B active MoE — the same active budget as
     # sarvam-30b, from a different organisation. A third independent Indic-first
     # model, so it tests whether the robustness result generalises beyond Sarvam.
@@ -127,7 +133,8 @@ MODELS = {
     # (b) 4096 context, so T1/T2 only — it cannot take T5's 10k-char articles.
     "Param2-17B-A2.4B": dict(
         path="/home/models/Param2-17B-A2.4B-Thinking", family="BharatGen", band="13-20B",
-        vllm=dict(dtype="bfloat16", trust_remote_code=True)),
+        vllm=dict(dtype="bfloat16", trust_remote_code=True),
+        gen_budget=6, thinking_only=True),
     "bloomz-7b1": dict(
         path="/home/models/bloomz-7b1", family="BigScience", band="7-12B",
         vllm=dict(dtype="bfloat16")),

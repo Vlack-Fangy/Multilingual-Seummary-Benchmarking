@@ -14,3 +14,9 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 .DS_Store
+
+# Per-item rows now carry raw generations (added for the output audit), so these
+# are ~130MB and growing. The summary JSONs and CSVs are the analysable artefacts
+# and stay tracked; the raw rows are regenerable from src/run_exact.py.
+results/exact/*.jsonl
+results/judge/*.jsonl

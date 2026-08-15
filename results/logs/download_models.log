@@ -34,3 +34,11 @@ Hint: set HF_DEBUG=1 as environment variable for full traceback.
 path=/home/models/OLMo-3.1-32B-Think
 61G	/home/models/OLMo-3.1-32B-Think
 === zai-org/GLM-4.7-Flash -> /home/models/GLM-4.7-Flash  19:12:39 ===
+Still waiting to acquire lock on /home/models/GLM-4.7-Flash/.cache/huggingface/.gitignore.lock (elapsed: 0.1 seconds)
+path=/home/models/GLM-4.7-Flash
+59G	/home/models/GLM-4.7-Flash
+=== bigscience/bloomz-7b1 -> /home/models/bloomz-7b1  19:41:21 ===
+path=/home/models/bloomz-7b1
+27G	/home/models/bloomz-7b1
+=== all done 19:51:23 ===
+/dev/sdb1        14T   12T  1.9T  86% /home

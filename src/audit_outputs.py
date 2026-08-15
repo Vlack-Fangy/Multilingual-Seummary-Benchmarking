@@ -41,7 +41,15 @@ def degenerate(t, n=6):
 
 
 def audit_file(p):
-    rows = [json.loads(l) for l in p.read_text(encoding="utf-8").splitlines() if l.strip()]
+    # Tolerate a half-written final line: these files are read while runs append.
+    rows = []
+    for l in p.read_text(encoding="utf-8", errors="replace").splitlines():
+        if not l.strip():
+            continue
+        try:
+            rows.append(json.loads(l))
+        except json.JSONDecodeError:
+            continue
     rows = [r for r in rows if "gen" in r]
     if not rows:
         return None
@@ -75,7 +83,15 @@ def main():
 
     if args.show:
         for p in sorted(EX.glob(f"{args.show}__*.jsonl")):
-            rows = [json.loads(l) for l in p.read_text(encoding="utf-8").splitlines() if l.strip()]
+            # Tolerate a half-written final line: these files are read while runs append.
+    rows = []
+    for l in p.read_text(encoding="utf-8", errors="replace").splitlines():
+        if not l.strip():
+            continue
+        try:
+            rows.append(json.loads(l))
+        except json.JSONDecodeError:
+            continue
             rows = [r for r in rows if "gen" in r]
             for key in sorted({(r["lang"], r["script"]) for r in rows}):
                 sub = [r for r in rows if (r["lang"], r["script"]) == key][: args.n]

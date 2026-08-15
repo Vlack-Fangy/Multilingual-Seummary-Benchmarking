@@ -213,7 +213,8 @@ def main():
             # it forces a choice out of a distribution the model never intended to
             # place there. Free generation + parse is also what Sarvam did.
             sp = SamplingParams(temperature=0.0, seed=0,
-                                max_tokens=256 if kind == "mcq" else 512)
+                                max_tokens=(256 if kind == "mcq" else 512)
+                                * spec.get("gen_budget", 1))
 
             t1 = time.time()
             outs = llm.generate(prompts, sp, use_tqdm=False)

@@ -1,0 +1,7 @@
+usage: run_exact.py [-h] --task {arc,gsm8k,mmlu,triviaqa} --model
+                    {Llama-3.1-8B-Instruct,Ministral-3-14B,Ministral-3-8B,Mistral-7B-Instr-v0.3,Mistral-Small-3.2-24B,OLMo-3.1-32B-Think,Param2-17B-A2.4B,Qwen3-14B-Instruct,Qwen3-30B-A3B,Qwen3-32B,Qwen3-8B,Qwen3.5-9B,aya-expanse-32b,aya-expanse-8b,bloomz-7b1,gemma-2-27b-it,gemma-3-27b-it,gemma-4-12B-it,gemma-4-26B-A4B-it,gemma-4-31B-it,sarvam-30b,sarvam-m}
+                    [--langs LANGS [LANGS ...]]
+                    [--scripts SCRIPTS [SCRIPTS ...]] [--limit LIMIT]
+                    [--gpu GPU] [--gpu-frac GPU_FRAC]
+                    [--max-model-len MAX_MODEL_LEN]
+run_exact.py: error: argument --model: invalid choice: 'GLM-4.7-Flash' (choose from Llama-3.1-8B-Instruct, Ministral-3-14B, Ministral-3-8B, Mistral-7B-Instr-v0.3, Mistral-Small-3.2-24B, OLMo-3.1-32B-Think, Param2-17B-A2.4B, Qwen3-14B-Instruct, Qwen3-30B-A3B, Qwen3-32B, Qwen3-8B, Qwen3.5-9B, aya-expanse-32b, aya-expanse-8b, bloomz-7b1, gemma-2-27b-it, gemma-3-27b-it, gemma-4-12B-it, gemma-4-26B-A4B-it, gemma-4-31B-it, sarvam-30b, sarvam-m)
