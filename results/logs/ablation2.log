@@ -1,0 +1,15 @@
+=== sarvam-30b 3-shot 20:09:58 ===
+  hi /native n=  300 acc=0.8100 unparsed=   0   26.0s  gpu_s/1k=   86.8
+  hi /roman  n=  300 acc=0.7100 unparsed=   0   25.7s  gpu_s/1k=   85.5
+  bn /native n=  300 acc=0.7567 unparsed=   0   28.3s  gpu_s/1k=   94.4
+  bn /roman  n=  300 acc=0.6500 unparsed=   0   21.8s  gpu_s/1k=   72.7
+  pa /native n=  300 acc=0.7867 unparsed=   0   27.9s  gpu_s/1k=   93.2
+  pa /roman  n=  300 acc=0.7000 unparsed=   1   22.3s  gpu_s/1k=   74.4
+  ta /native n=  300 acc=0.7500 unparsed=   0   30.8s  gpu_s/1k=  102.7
+  ta /roman  n=  300 acc=0.5700 unparsed=   0   28.9s  gpu_s/1k=   96.3
+  te /native n=  300 acc=0.8233 unparsed=   0   23.8s  gpu_s/1k=   79.5
+  te /roman  n=  300 acc=0.6567 unparsed=   0   29.9s  gpu_s/1k=   99.6
+SKIP gemma-4-31B-it
+SKIP Qwen3-30B-A3B
+SKIP Mistral-Small-3.2-24B
+=== ablation done 20:15:42 ===

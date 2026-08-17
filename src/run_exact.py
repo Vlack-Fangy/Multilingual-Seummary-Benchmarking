@@ -147,6 +147,10 @@ def main():
     ap.add_argument("--gpu", default="0")
     ap.add_argument("--gpu-frac", type=float, default=0.0, help="0 = auto-size to free memory")
     ap.add_argument("--max-model-len", type=int, default=4096)
+    # ABLATION: k in-context exemplars, drawn from the SAME language+script split
+    # so the demonstration matches the test distribution exactly.
+    ap.add_argument("--shots", type=int, default=0)
+    ap.add_argument("--tag", default="")
     args = ap.parse_args()
 
     spec = C.MODELS[args.model]
@@ -169,7 +173,12 @@ def main():
     tok = llm.get_tokenizer()
 
     OUT.mkdir(parents=True, exist_ok=True)
-    dst = OUT / f"{args.model}__{args.task}.jsonl"
+    # Shot count MUST be in the filename: without it the ablation silently
+    # overwrites the 0-shot results it is meant to be compared against.
+    suffix = f"_{args.shots}shot" if args.shots else ""
+    if args.tag:
+        suffix += f"_{args.tag}"
+    dst = OUT / f"{args.model}__{args.task}{suffix}.jsonl"
     f_out = dst.open("w", encoding="utf-8")
     summary = []
 
@@ -183,15 +192,40 @@ def main():
             except Exception as e:
                 print(f"  {lang}/{script}: SKIP ({type(e).__name__})")
                 continue
+            # Exemplars come off the FRONT and are excluded from evaluation, so
+            # no test item is ever also a demonstration.
+            shots_rows = rows[: args.shots] if args.shots else []
+            rows = rows[args.shots:]
             if args.limit:
                 rows = rows[: args.limit]
+
+            # Few-shot must be MULTI-TURN. Concatenating exemplars into one user
+            # message made the model read "question -> #### N" as a pattern to
+            # continue: it emitted "#### 18 / #### 3 / #### 180 / #### 180..." in a
+            # loop with no reasoning, and accuracy fell 0.666 -> 0.070. Exemplar
+            # answers belong in assistant turns.
+            shots_msgs = []
+            for sr in shots_rows:
+                sp_, sg_, _ = build(args.task, sr)
+                if sg_ is None:
+                    continue
+                if kind == "num":
+                    # gsm8k ships the worked English CoT, so the demonstration can
+                    # show reasoning instead of a bare number.
+                    work = re.sub(r"<<[^>]*>>", "", str(sr.get("answer", ""))).strip()
+                    ans = work if work.endswith(str(sg_)) else f"{work}\n#### {sg_}"
+                else:
+                    ans = f"Answer: {sg_}"
+                shots_msgs += [{"role": "user", "content": sp_},
+                               {"role": "assistant", "content": ans}]
 
             prompts, golds, nopts = [], [], []
             for r in rows:
                 p, g, n = build(args.task, r)
                 if g is None:
                     continue
-                ids = tok.apply_chat_template([{"role": "user", "content": p}], tokenize=True,
+                msgs = shots_msgs + [{"role": "user", "content": p}]
+                ids = tok.apply_chat_template(msgs, tokenize=True,
                                               add_generation_prompt=True,
                                               **spec.get("chat_kwargs", {}).get("chat_template_kwargs", {}))
                 if hasattr(ids, "input_ids"):
@@ -261,7 +295,8 @@ def main():
                   f"unparsed={n_unparsed:4} {wall:6.1f}s  gpu_s/1k={rec['gpu_s_per_1k']:7.1f}")
 
     f_out.close()
-    (OUT / f"{args.model}__{args.task}__summary.json").write_text(json.dumps(summary, indent=2))
+    (OUT / f"{args.model}__{args.task}{suffix}__summary.json").write_text(
+        json.dumps(summary, indent=2))
     print(f"\nwrote {dst}")
 
 

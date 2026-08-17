@@ -1,0 +1,35 @@
+SKIP sarvam-30b
+=== gemma-4-31B-it 3-shot 19:20:01 ===
+  hi /native n=  300 acc=0.9667 unparsed=   0   23.4s  gpu_s/1k=   77.9
+  hi /roman  n=  300 acc=0.9567 unparsed=   0   23.4s  gpu_s/1k=   78.1
+  bn /native n=  300 acc=0.9467 unparsed=   0   30.9s  gpu_s/1k=  102.9
+  bn /roman  n=  300 acc=0.8933 unparsed=   0   31.9s  gpu_s/1k=  106.3
+  pa /native n=  300 acc=0.9667 unparsed=   0   35.8s  gpu_s/1k=  119.3
+  pa /roman  n=  300 acc=0.9500 unparsed=   0   32.1s  gpu_s/1k=  107.0
+  ta /native n=  300 acc=0.9567 unparsed=   0   31.4s  gpu_s/1k=  104.5
+  ta /roman  n=  300 acc=0.8933 unparsed=   0   36.9s  gpu_s/1k=  122.9
+  te /native n=  300 acc=0.9533 unparsed=   0   31.9s  gpu_s/1k=  106.3
+  te /roman  n=  300 acc=0.8833 unparsed=   0   34.4s  gpu_s/1k=  114.7
+=== Qwen3-30B-A3B 3-shot 19:28:57 ===
+  hi /native n=  300 acc=0.9267 unparsed=   0    9.1s  gpu_s/1k=   30.2
+  hi /roman  n=  300 acc=0.7967 unparsed=   0    8.3s  gpu_s/1k=   27.7
+  bn /native n=  300 acc=0.9267 unparsed=   0    7.8s  gpu_s/1k=   25.9
+  bn /roman  n=  300 acc=0.4867 unparsed=   0    9.1s  gpu_s/1k=   30.3
+  pa /native n=  300 acc=0.9000 unparsed=   0    9.2s  gpu_s/1k=   30.6
+  pa /roman  n=  300 acc=0.5667 unparsed=   0    8.8s  gpu_s/1k=   29.2
+  ta /native n=  300 acc=0.8967 unparsed=   0    9.8s  gpu_s/1k=   32.8
+  ta /roman  n=  300 acc=0.2000 unparsed=   0   10.1s  gpu_s/1k=   33.7
+  te /native n=  300 acc=0.9133 unparsed=   0   13.9s  gpu_s/1k=   46.2
+  te /roman  n=  300 acc=0.2267 unparsed=   0   11.1s  gpu_s/1k=   37.2
+=== Mistral-Small-3.2-24B 3-shot 19:32:06 ===
+  hi /native n=  300 acc=0.9000 unparsed=   0   12.4s  gpu_s/1k=   41.2
+  hi /roman  n=  300 acc=0.8500 unparsed=   0   12.4s  gpu_s/1k=   41.2
+  bn /native n=  300 acc=0.8900 unparsed=   0   12.8s  gpu_s/1k=   42.6
+  bn /roman  n=  300 acc=0.5967 unparsed=   0   13.0s  gpu_s/1k=   43.3
+  pa /native n=  300 acc=0.8933 unparsed=   0   22.6s  gpu_s/1k=   75.3
+  pa /roman  n=  300 acc=0.6733 unparsed=   0   13.0s  gpu_s/1k=   43.2
+  ta /native n=  300 acc=0.8867 unparsed=   0   13.3s  gpu_s/1k=   44.2
+  ta /roman  n=  300 acc=0.3000 unparsed=   0   15.0s  gpu_s/1k=   50.1
+  te /native n=  300 acc=0.8867 unparsed=   0   24.2s  gpu_s/1k=   80.8
+  te /roman  n=  300 acc=0.3067 unparsed=   0   17.5s  gpu_s/1k=   58.5
+=== ablation done 19:35:58 ===

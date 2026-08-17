@@ -1,0 +1,43 @@
+GPU 2: 139/140 GiB free -> util=0.80
+WARNING 08-15 18:44:45 [system_utils.py:157] We must use the `spawn` multiprocessing start method. Overriding VLLM_WORKER_MULTIPROC_METHOD to 'spawn'. See https://docs.vllm.ai/en/latest/usage/troubleshooting.html#python-multiprocessing for more information. Reasons: CUDA is initialized
+(EngineCore pid=818804) Loading safetensors checkpoint shards:   0% Completed | 0/26 [00:00<?, ?it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:   4% Completed | 1/26 [00:00<00:05,  4.33it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:   8% Completed | 2/26 [00:00<00:06,  3.63it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:  12% Completed | 3/26 [00:00<00:07,  3.24it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:  15% Completed | 4/26 [00:01<00:07,  3.09it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:  19% Completed | 5/26 [00:01<00:07,  3.00it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:  23% Completed | 6/26 [00:01<00:06,  3.04it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:  27% Completed | 7/26 [00:02<00:06,  3.11it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:  31% Completed | 8/26 [00:02<00:05,  3.14it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:  35% Completed | 9/26 [00:02<00:05,  3.02it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:  38% Completed | 10/26 [00:03<00:05,  2.89it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:  42% Completed | 11/26 [00:03<00:05,  2.79it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:  46% Completed | 12/26 [00:04<00:05,  2.74it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:  50% Completed | 13/26 [00:04<00:04,  2.80it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:  54% Completed | 14/26 [00:04<00:04,  2.96it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:  58% Completed | 15/26 [00:04<00:03,  3.05it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:  62% Completed | 16/26 [00:05<00:03,  3.11it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:  65% Completed | 17/26 [00:05<00:02,  3.27it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:  69% Completed | 18/26 [00:05<00:02,  3.43it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:  73% Completed | 19/26 [00:06<00:01,  3.59it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:  77% Completed | 20/26 [00:06<00:01,  3.71it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:  81% Completed | 21/26 [00:06<00:01,  3.72it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:  85% Completed | 22/26 [00:06<00:01,  3.73it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:  88% Completed | 23/26 [00:07<00:00,  3.65it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:  92% Completed | 24/26 [00:07<00:00,  3.67it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards:  96% Completed | 25/26 [00:07<00:00,  3.52it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards: 100% Completed | 26/26 [00:08<00:00,  3.34it/s]
+(EngineCore pid=818804) Loading safetensors checkpoint shards: 100% Completed | 26/26 [00:08<00:00,  3.24it/s]
+(EngineCore pid=818804) 
+(EngineCore pid=818804) 2026-08-15 18:45:05,499 - INFO - autotuner.py:2397 - flashinfer.jit: [Autotuner]: Loaded 0 configs from /home/harshal/.cache/vllm/flashinfer_autotune_cache/0.6.16.post3/90a/2dbe4d4afa7ed7036d5664783178f0dc72dc75ffc4ca758c760c83f1baed9fee/autotune_configs.json
+(EngineCore pid=818804) 2026-08-15 18:45:05,499 - INFO - autotuner.py:829 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+(EngineCore pid=818804) 2026-08-15 18:45:05,533 - INFO - autotuner.py:852 - flashinfer.jit: [Autotuner]: Autotuning process ends
+(EngineCore pid=818804) 2026-08-15 18:45:05,537 - INFO - autotuner.py:2269 - flashinfer.jit: [Autotuner]: Saved 0 configs to /home/harshal/.cache/vllm/flashinfer_autotune_cache/0.6.16.post3/90a/2dbe4d4afa7ed7036d5664783178f0dc72dc75ffc4ca758c760c83f1baed9fee/autotune_configs.json (0 new, 0 from previous config)
+(EngineCore pid=818804) Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   0%|          | 0/51 [00:00<?, ?it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   6%|▌         | 3/51 [00:00<00:01, 25.55it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  12%|█▏        | 6/51 [00:00<00:01, 24.13it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  18%|█▊        | 9/51 [00:00<00:01, 22.02it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  24%|██▎       | 12/51 [00:00<00:01, 23.48it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  29%|██▉       | 15/51 [00:00<00:01, 23.34it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  35%|███▌      | 18/51 [00:00<00:01, 24.56it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  41%|████      | 21/51 [00:00<00:01, 25.71it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  47%|████▋     | 24/51 [00:00<00:01, 26.58it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  53%|█████▎    | 27/51 [00:01<00:00, 26.76it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  59%|█████▉    | 30/51 [00:01<00:00, 27.32it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  65%|██████▍   | 33/51 [00:01<00:00, 25.81it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  71%|███████   | 36/51 [00:01<00:00, 25.86it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  76%|███████▋  | 39/51 [00:01<00:00, 24.84it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  82%|████████▏ | 42/51 [00:01<00:00, 24.10it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  88%|████████▊ | 45/51 [00:01<00:00, 23.46it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  94%|█████████▍| 48/51 [00:01<00:00, 23.46it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE): 100%|██████████| 51/51 [00:02<00:00, 15.89it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE): 100%|██████████| 51/51 [00:02<00:00, 22.35it/s]
+(EngineCore pid=818804) Capturing CUDA graphs (decode, FULL):   0%|          | 0/51 [00:00<?, ?it/s]Capturing CUDA graphs (decode, FULL):   6%|▌         | 3/51 [00:00<00:01, 24.55it/s]Capturing CUDA graphs (decode, FULL):  12%|█▏        | 6/51 [00:00<00:01, 25.68it/s]Capturing CUDA graphs (decode, FULL):  18%|█▊        | 9/51 [00:00<00:01, 24.58it/s]Capturing CUDA graphs (decode, FULL):  24%|██▎       | 12/51 [00:00<00:01, 25.86it/s]Capturing CUDA graphs (decode, FULL):  31%|███▏      | 16/51 [00:00<00:01, 29.51it/s]Capturing CUDA graphs (decode, FULL):  39%|███▉      | 20/51 [00:00<00:01, 29.76it/s]Capturing CUDA graphs (decode, FULL):  47%|████▋     | 24/51 [00:00<00:00, 30.58it/s]Capturing CUDA graphs (decode, FULL):  55%|█████▍    | 28/51 [00:00<00:00, 30.67it/s]Capturing CUDA graphs (decode, FULL):  63%|██████▎   | 32/51 [00:01<00:00, 29.54it/s]Capturing CUDA graphs (decode, FULL):  69%|██████▊   | 35/51 [00:01<00:00, 28.60it/s]Capturing CUDA graphs (decode, FULL):  75%|███████▍  | 38/51 [00:01<00:00, 26.56it/s]Capturing CUDA graphs (decode, FULL):  80%|████████  | 41/51 [00:01<00:00, 24.99it/s]Capturing CUDA graphs (decode, FULL):  86%|████████▋ | 44/51 [00:01<00:00, 24.95it/s]Capturing CUDA graphs (decode, FULL):  92%|█████████▏| 47/51 [00:01<00:00, 24.48it/s]Capturing CUDA graphs (decode, FULL):  98%|█████████▊| 50/51 [00:01<00:00, 25.79it/s]Capturing CUDA graphs (decode, FULL): 100%|██████████| 51/51 [00:01<00:00, 27.13it/s]
+(EngineCore pid=818804) WARNING 08-15 18:45:15 [jit_monitor.py:135] Triton kernel JIT compilation during inference: fused_moe_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+loaded sarvam-30b in 34s
+generated 500 in 29s
+  native     script compliance 245/250 = 98.0%
+  romanised  script compliance 0/250 = 0.0%
+wrote /home/harshal/multilingual-summ-bench/results/indivibe/sarvam-30b__chat.jsonl (500 rows)

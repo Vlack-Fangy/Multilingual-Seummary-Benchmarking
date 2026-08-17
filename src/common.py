@@ -254,12 +254,73 @@ def classify_script(text, expected, romanized_ok=False, threshold=0.60):
     prof, total = script_profile(text)
     if total < 5:
         return "empty"
-    exp, lat = prof.get(expected, 0.0), prof.get("Latin", 0.0)
-    if expected != "Latin" and exp >= threshold and exp > lat:
+    lat = prof.get("Latin", 0.0)
+    # Latin must be handled first and separately. When expected == "Latin" the
+    # two variables below hold the SAME number, so a strict `lat > exp` test can
+    # never fire — that bug reported 0/250 romanised compliance for all 9 models,
+    # including replies that were flawless romanized Bengali.
+    if expected == "Latin":
+        return "Latin" if lat >= threshold else "mixed"
+    exp = prof.get(expected, 0.0)
+    if exp >= threshold and exp > lat:
         return expected
     if lat >= threshold and lat > exp:
         return "Latin"
     return "mixed"
+
+
+# ------------------------------------------------- romanized language ID
+
+# Script ranges cannot tell romanized Indic from English: both are Latin. A
+# romanized-Bengali prompt answered in fluent English scored "compliant" under
+# the script test, which is exactly the register defection Indi-RomCoM measures.
+# High-frequency English function words are the cheap discriminator — they are
+# grammatical, so genuine English is dense in them, while romanized Indic uses
+# its own function words (ka/ke/ki, ne, hai, aur, jonyo, korte, cheyandi...).
+_EN_FUNC = {
+    "the", "is", "are", "was", "were", "be", "been", "being", "of", "to", "in",
+    "for", "on", "with", "as", "at", "by", "from", "that", "this", "these",
+    "those", "it", "its", "you", "your", "we", "our", "they", "their", "he",
+    "she", "his", "her", "and", "or", "but", "if", "then", "than", "so",
+    "because", "while", "when", "where", "which", "who", "what", "how", "can",
+    "could", "should", "would", "will", "have", "has", "had", "do", "does",
+    "did", "not", "there", "here", "about", "into", "over", "after", "before",
+}
+# Function words shared across romanized Indic languages. Presence of these is
+# positive evidence the reply is romanized Indic rather than English.
+_INDIC_ROM = {
+    "hai", "hain", "ka", "ke", "ki", "ko", "se", "me", "mein", "aur", "ye",
+    "yeh", "wo", "woh", "kya", "nahi", "nahin", "bhi", "par", "liye", "kar",
+    "karna", "hota", "hoti", "raha", "rahi", "tha", "thi", "aap", "aapka",
+    "tum", "hum", "bilkul", "jonyo", "korte", "kore", "ami", "tumi", "amar",
+    "eta", "ekta", "cheyandi", "chesi", "meeru", "naa", "adi", "unna",
+    "seiya", "irukku", "avar", "enna", "vandhu", "da", "di", "na", "ne",
+}
+
+
+def romanized_profile(text):
+    """(english_ratio, indic_ratio) over lowercase word tokens."""
+    words = [w for w in re.findall(r"[a-zA-Z']+", text.lower()) if len(w) > 1]
+    if not words:
+        return 0.0, 0.0
+    en = sum(1 for w in words if w in _EN_FUNC)
+    ind = sum(1 for w in words if w in _INDIC_ROM)
+    return en / len(words), ind / len(words)
+
+
+def classify_romanized(text, en_thresh=0.18):
+    """'english' | 'romanized-indic' | 'short'.
+
+    Threshold from the observed split: genuine English prose runs ~0.25-0.35
+    function-word density, romanized Indic ~0.02-0.10 even when code-mixed.
+    """
+    words = re.findall(r"[a-zA-Z']+", text)
+    if len(words) < 8:
+        return "short"
+    en, ind = romanized_profile(text)
+    if ind >= 0.04 and ind * 2 >= en:
+        return "romanized-indic"
+    return "english" if en >= en_thresh else "romanized-indic"
 
 
 # ---------------------------------------------------------------- prompts
