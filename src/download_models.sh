@@ -2,8 +2,8 @@
 # Fetch phase-2 model weights into the shared /home/models tree.
 # Resumable: hf download skips files already present, so re-running is cheap.
 set -u
-DEST=/home/models
-HF=/home/harshal/miniconda3/envs/car/bin/hf
+DEST=${MSB_MODELS_ROOT:-./models}
+HF=${HF:-hf}
 
 MODELS=(
   # Tier 1 — family gaps

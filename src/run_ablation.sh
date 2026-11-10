@@ -6,7 +6,7 @@
 # Models span all three robustness tiers found in T1.
 set -u
 cd "$(dirname "$0")/.."
-PY=/home/harshal/miniconda3/envs/msb/bin/python
+PY=${PY:-python}
 GPU="${1:-0}"
 for m in sarvam-30b gemma-4-31B-it Qwen3-30B-A3B Mistral-Small-3.2-24B; do
   out="results/exact/${m}__gsm8k_3shot__summary.json"

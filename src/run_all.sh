@@ -8,7 +8,7 @@
 # file already exists, so the run is resumable.
 set -u
 cd "$(dirname "$0")/.."
-PY=/home/harshal/miniconda3/envs/msb/bin/python
+PY=${PY:-python}
 COND=${COND:-native}
 LOGDIR=results/logs; mkdir -p "$LOGDIR"
 

@@ -13,7 +13,7 @@ import sys
 import time
 from pathlib import Path
 
-os.environ.setdefault("CUDA_VISIBLE_DEVICES", "4")  # GPU 4 only, per project constraint
+os.environ.setdefault("CUDA_VISIBLE_DEVICES", "0")  # Preserve an explicit allocation.
 os.environ.setdefault("VLLM_LOGGING_LEVEL", "WARNING")
 os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
 # FlashInfer JIT-compiles its sampler via ninja on first use. We decode greedily,
@@ -90,7 +90,8 @@ def main():
     ap.add_argument("--max-model-len", type=int, default=0, help="0 = model native, capped at 32k")
     # GPU 4 is shared with the user's other jobs; leave headroom rather than
     # claiming the whole card. 0.80 of 143GB still fits any contestant plus KV cache.
-    ap.add_argument("--gpu-frac", type=float, default=0.80)
+    ap.add_argument("--gpu-frac", type=float, default=0.0,
+                    help="0 = auto-size to free memory (shared-GPU safe)")
     ap.add_argument("--tag", default="")
     args = ap.parse_args()
 
@@ -104,9 +105,21 @@ def main():
 
     from vllm import LLM, SamplingParams
 
+    # vLLM measures gpu_memory_utilization against TOTAL memory, so a fixed
+    # fraction fails outright whenever a neighbour is resident — and this box is
+    # shared, with tenants that grow mid-run. Claim a share of what is actually
+    # FREE instead, matching judge.py and run_indivibe.py.
+    frac = args.gpu_frac
+    if frac <= 0:
+        import torch
+        free, total = torch.cuda.mem_get_info()
+        frac = min(0.80, 0.90 * free / total)
+        print(f"GPU: {free/2**30:.0f}/{total/2**30:.0f} GiB free -> "
+              f"gpu_memory_utilization={frac:.2f}")
+
     t0 = time.time()
     llm = LLM(model=spec["path"], max_model_len=ctx,
-              gpu_memory_utilization=args.gpu_frac, enforce_eager=False,
+              gpu_memory_utilization=frac, enforce_eager=False,
               **spec.get("vllm", {}))
     load_s = time.time() - t0
     print(f"loaded {args.model} in {load_s:.0f}s (ctx={ctx})")
@@ -125,7 +138,12 @@ def main():
         sub = [r for r in items if r["lang"] == lang]
         if not sub:
             continue
-        max_tok = C.max_tokens_for(args.model, lang, tpc)
+        # The character budget sizes the SUMMARY. A thinking model also has to pay
+        # for its reasoning trace out of the same allowance, and without gen_budget
+        # it spends the whole thing before writing anything: Param2-17B-A2.4B came
+        # back 98.9% truncated. run_exact.py already multiplied by gen_budget; this
+        # path never did.
+        max_tok = C.max_tokens_for(args.model, lang, tpc) * spec.get("gen_budget", 1)
         sp = SamplingParams(temperature=0.0, max_tokens=max_tok, seed=0)
 
         budget = ctx - max_tok - 8  # leave room for the generation itself

@@ -13,9 +13,16 @@ tok_per_byte is the tell: a tokenizer with no vocabulary coverage for a script
 degrades to byte fallback, and since Brahmic codepoints are 3 bytes in UTF-8,
 that alone inflates tok_per_word by ~3x versus a tokenizer that has the script.
 """
+
+import os
+from pathlib import Path
+MODELS_ROOT = Path(os.environ.get("MSB_MODELS_ROOT", "./models")).expanduser()
 import json
 import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import common as C  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 FLORES = ROOT / "data" / "raw" / "flores"
@@ -23,25 +30,33 @@ OUT = ROOT / "results" / "fertility"
 
 LANGS = ["hi", "bn", "pa", "ta", "te", "en"]
 
-# (label, path, family, band, role) — role: contestant | judge | diagnostic
-MODELS = [
-    ("sarvam-30b",            "/home/models/sarvam-30b",                          "Sarvam",  "21-30B", "contestant"),
-    ("Qwen3-30B-A3B",         "/home/models/Qwen3-30B-A3B-Instruct-2507",         "Qwen",    "21-30B", "contestant"),
-    ("Mistral-Small-3.2-24B", "/home/models/Mistral-Small-3.2-24B-Instruct-2506", "Mistral", "21-30B", "contestant"),
-    ("Qwen3-32B",             "/home/models/Qwen3-32B",                           "Qwen",    "21-30B", "contestant"),
-    ("gemma-2-27b-it",        "/home/models/gemma-2-27b-it",                      "Gemma",   "21-30B", "contestant"),
-    ("Qwen3-14B-Instruct",    "/home/models/Qwen3-14B-Instruct",                  "Qwen",    "13-20B", "contestant"),
-    ("Qwen3.5-9B",            "/home/models/Qwen3.5-9B",                          "Qwen",    "7-12B",  "contestant"),
-    ("Qwen3-8B",              "/home/models/Qwen3-8B",                            "Qwen",    "7-12B",  "contestant"),
-    ("Llama-3.1-8B-Instruct", "/home/models/Llama-3.1-8B-Instruct",               "Llama",   "7-12B",  "contestant"),
-    ("Mistral-7B-Instr-v0.3", "/home/models/Mistral-7B-Instruct-v0.3",            "Mistral", "7-12B",  "contestant"),
-    ("gpt-oss-120b",          "/home/models/gpt-oss-120b",                        "OpenAI",  "judge",  "judge"),
-    ("gpt-oss-20b",           "/home/models/gpt-oss-20b",                         "OpenAI",  "judge",  "judge"),
-    # Diagnostics for the 10.43 question: older, small-vocab tokenizers that
-    # predate Indic coverage and should sit in the byte-fallback regime.
-    ("Llama-2-7b-chat",       "/home/models/Llama-2-7b-chat-hf",                  "Llama",   "-",      "diagnostic"),
-    ("Gemma-3-4B-it",         "/home/models/Gemma-3-4B-it",                       "Gemma",   "-",      "diagnostic"),
+# Non-contestant tokenizers: judges, plus diagnostics for the 10.43 question —
+# older small-vocab tokenizers that predate Indic coverage and should sit in the
+# byte-fallback regime.
+EXTRA = [
+    ("gpt-oss-120b",    str(MODELS_ROOT / 'gpt-oss-120b'),       "OpenAI", "judge", "judge"),
+    ("gpt-oss-20b",     str(MODELS_ROOT / 'gpt-oss-20b'),        "OpenAI", "judge", "judge"),
+    ("Llama-2-7b-chat", str(MODELS_ROOT / 'Llama-2-7b-chat-hf'), "Llama",  "-",     "diagnostic"),
+    ("Gemma-3-4B-it",   str(MODELS_ROOT / 'Gemma-3-4B-it'),      "Gemma",  "-",     "diagnostic"),
 ]
+
+
+def build_models():
+    """(label, path, family, band, role) — contestants derived from C.MODELS.
+
+    This list used to be maintained by hand alongside common.MODELS. The two
+    drifted: the nine-model T4/T5 roster was added to common.py only, so
+    fertility.csv silently lacked five of them and max_tokens_for() — which sizes
+    the summarization budget from tok_per_char — raised KeyError at generation
+    time. Deriving from C.MODELS makes that class of drift impossible.
+    """
+    out = [(k, s["path"], s["family"], s["band"], "contestant")
+           for k, s in sorted(C.MODELS.items())]
+    have = {m[0] for m in out}
+    return out + [e for e in EXTRA if e[0] not in have]
+
+
+MODELS = build_models()
 
 
 class Tok:

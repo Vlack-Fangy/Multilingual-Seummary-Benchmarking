@@ -1,0 +1,11 @@
+-r requirements-pinned.txt
+huggingface_hub
+mistral-common
+numpy
+scipy
+tabulate
+sacrebleu
+rouge-score
+bert-score
+sentencepiece
+datasets

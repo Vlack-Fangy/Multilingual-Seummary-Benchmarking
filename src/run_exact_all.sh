@@ -8,7 +8,7 @@
 # needs a dedicated card and a warm-up pass. Accuracy is unaffected.
 set -u
 cd "$(dirname "$0")/.."
-PY=/home/harshal/miniconda3/envs/msb/bin/python
+PY=${PY:-python}
 GPU="$1"; shift
 LIMIT="${LIMIT:-500}"
 LOG=results/logs; mkdir -p "$LOG"

@@ -1,273 +1,86 @@
-# Multilingual Summarization Benchmark — Model Inventory & Gaps
+# Multilingual Summarization Benchmark
 
-Compare summarization capability across model families at matched sizes (7–30B), under
-native-script / romanized / code-switched conditions, in Hindi, Bengali, Punjabi, Tamil,
-Telugu, English.
+Research scripts for comparing language models across Hindi, Bengali, Punjabi,
+Tamil, Telugu and English. The pipeline measures tokenizer fertility, generates
+summaries, scores saved outputs and compares native-script and romanized tasks.
+It also contains exact-answer QA, log-likelihood, pairwise judging and latency
+experiments developed alongside the summarization study.
 
-**Policy: no models are downloaded for this project.** Everything runs from the shared
-`/home/models` tree. Where the handoff brief names a model that is not present there, it is
-recorded below as *unaccounted* and excluded from the design rather than fetched.
+## What is included
 
-**Compute: GPU 4 only** (H200 NVL, 143 GB, idle at time of survey). The other five GPUs on
-`sentinel` are in use by other jobs at 84–100% util. All work is single-GPU and serial.
+- `src/common.py`: model registry, prompts and character-based output budgets.
+- `src/download_data.py`, `build_eval_set.py`: dataset preparation and seeded sampling.
+- `src/fertility.py`: tokens per word, character and byte.
+- `src/generate.py`, `score.py`: generation and offline summary scoring.
+- `src/run_exact.py`, `run_loglik.py`: QA and likelihood experiments.
+- `src/judge*.py`, `analyze*.py`: model judging and result analysis.
 
-Verified 2026-08-11 against `/home/models` (3.3 TB, world-writable, shared with other users).
+## Setup
 
----
-
-## 1. Band coverage from local weights only
-
-| Family | 7–12B | 13–20B | 21–30B |
-|---|---|---|---|
-| **Sarvam** | — *(none exists)* | — *(none exists)* | `sarvam-30b` ✅ |
-| **Gemma** | ❌ unaccounted | — *(none exists)* | ⚠️ `gemma-2-27b-it` only |
-| **Qwen** | `Qwen3.5-9B` ✅ · `Qwen3-8B` | `Qwen3-14B-Instruct` ✅ | `Qwen3-30B-A3B-Instruct-2507` ✅ · `Qwen3-32B` |
-| **Llama** | `Llama-3.1-8B-Instruct` ✅ | — *(none exists)* | — *(none exists)* |
-| **Mistral** | ⚠️ `mistral_nemo_instruct` / `Mistral-7B-Instruct-v0.3` | ❌ unaccounted | `Mistral-Small-3.2-24B-Instruct-2506` ✅ |
-
-`—` = the family ships nothing in this band (ecosystem fact, not a local gap).
-`❌` = the model exists upstream but is not on disk.
-`⚠️` = a substitute is on disk but it is not the model the brief specified.
-
-**Net: the 21–30B panel is viable for four of five families. The 7–12B panel loses Gemma
-entirely and degrades Mistral by roughly two years.**
-
----
-
-## 2. Unaccounted models
-
-Named in the handoff brief, **not present** in `/home/models`. Not downloaded, per policy.
-
-| Model | Band | Consequence |
-|---|---|---|
-| **Gemma 4 12B Unified** | 7–12B | Gemma has **no representative at all** in the lower panel. |
-| **Gemma 4 26B A4B** | 21–30B | Upper-panel Gemma falls back to `gemma-2-27b-it` — two generations old (Jun 2024), 8K context, no Gemma-4 multilingual training. Any "Gemma vs Sarvam" claim is really "Gemma **2** vs Sarvam". |
-| **Ministral 3 8B** | 7–12B | Mistral's lower-panel slot falls to Mistral NeMo 12B or Mistral-7B-v0.3 (May 2024, 32k vocab — pre-Tekken, so it does not even test the tokenizer of interest). |
-| **Ministral 3 14B** | 13–20B | The 13–20B panel collapses to a **single model** (`Qwen3-14B-Instruct`). No cross-family comparison is possible in this band. |
-| **Qwen3.6-27B** | 21–30B | Substitutable — `Qwen3-30B-A3B-Instruct-2507` and `Qwen3-32B` are present and adequate. Low impact. |
-| **Qwen3.5-27B** | 21–30B | Same. Low impact. |
-| **Sarvam-M (23.6B)** | 21–30B | Loses the cleanest contrast available: Sarvam-M is built *on* Mistral Small, so Sarvam-M vs `Mistral-Small-3.2-24B` would have isolated the effect of Indic post-training on an identical backbone. Notable scientific loss. |
-
-### Impact on the research question
-
-Two of the five families cannot be compared at matched size against Sarvam on current-generation
-weights. If the headline claim is *"how do model families differ on Indic summarization at
-matched size"*, then as things stand it is answerable for **Sarvam · Qwen · Mistral** at 21–30B,
-and for **Qwen · Llama** at 7–12B. Gemma cannot participate on equal footing anywhere.
-
-Three ways forward, in order of cost — pick one:
-1. **Ship the 21–30B panel only** (4 families, one clean band). Honest, publishable, no downloads.
-2. **Report Gemma 2 explicitly as a generation-lagged datapoint**, clearly labelled, not as "Gemma".
-3. **Add Gemma 4 12B + 26B-A4B and Ministral 3 8B/14B to the shared tree** — ~150 GB against
-   2.4 TB free on `/home`. Requires lifting the no-download policy.
-
----
-
-## 3. Traps found during the survey
-
-Directory names in `/home/models` do not reliably describe contents. Verified from `config.json`:
-
-- **`diffusiongemma-26B-A4B-it` is not Gemma 4.** `model_type=diffusion_gemma`,
-  `DiffusionGemmaForBlockDiffusion`. It shares the Gemma-4 26B-A4B backbone (vocab 262144,
-  128 experts) but decodes by **block diffusion, not autoregression**. Generation semantics and
-  `max_new_tokens` do not transfer. **Unusable as the Gemma AR baseline.**
-- **`Pixtral-12B-2409` is not Pixtral.** `model_type=granite` — it is an IBM Granite model.
-- **`sarvam-30b` is stored in fp32** (128.6 GB per the safetensors index; `torch_dtype` is unset).
-  Loading with `dtype="auto"` will attempt 128 GB and leave ~15 GB for KV cache on a 143 GB card.
-  **Must load with `dtype="bfloat16"` explicitly** (~64 GB).
-- **`sarvam-30b` needs `trust_remote_code=True`** (`modeling_sarvam_moe.py`). Native vLLM support
-  is still an open PR (vllm-project/vllm#33942); the repo ships `hotpatch_vllm.py` requiring
-  **vllm==0.15.0**, or a vendor fork. This is the main integration risk in the run plan.
-- **`Mistral-Small-3.2-24B` ships no HF tokenizer** — only `tekken.json`. `AutoTokenizer` will
-  fail; it needs `mistral-common`. This matters directly, since Tekken is one of the
-  high-fertility tokenizers the study is built around.
-- **`model_list.txt` overstates the tree.** It lists `gemma-3-12b-it`, `gemma-3-27b-it`,
-  `gemma-2-2b-it`, `InternVL3-14B`, `internvl3-8b` — none of which exist on disk. Do not plan
-  against that file.
-- `Qwen3-14B` (56 GB) appears to duplicate weights; `Qwen3-14B-Instruct` (28 GB) is the clean
-  bf16 copy and is the one to use.
-- `/home/models` is `777` and shared. `test_file_200_per_language.jsonl` and `test.jsonl` there
-  belong to another user (`sudipto`, an MMLU-style QA set in en/hi/bn/kn/ta) and are unrelated
-  to this project. Do not modify anything in that tree.
-
----
-
-## 4. Tokenizer fertility — DONE (iteration 1)
-
-Full results: [`results/fertility/FINDINGS.md`](results/fertility/FINDINGS.md).
-Measured on 1012 sentence-aligned FLORES devtest sentences across all six languages.
-
-Brahmic means, tokens/word: **Sarvam 1.88** · Mistral-Small-3.2 3.08 · Gemma-2-27B 3.56 ·
-Qwen3.5-9B 5.00 · Qwen3 (all sizes) 8.22 · Llama-3.1-8B 8.91 · Mistral-7B-v0.3 9.61.
-Judge `gpt-oss-120b` 2.59.
-
-**The 10.43 discrepancy is resolved: Hindi is not representative.** Llama-3.1-8B measures **8.91**
-across all five Indic languages — the same ballpark as the published figure. The earlier 2.35 came
-from measuring Hindi alone, and **Hindi is Llama's best Indic language by 5×** (hi 2.67, te 13.30).
-Never quote a single-language fertility number; Hindi is the most misleading choice available.
-
-Other results that change how later iterations should be read:
-- **Premise confirmed** — 4.37× spread inside the 21–30B band alone (Sarvam 1.88 → Qwen3 8.22).
-- **Every Qwen3 size shares a byte-identical tokenizer**, so fertility is perfectly confounded with
-  size within that line — which makes Qwen3 a controlled ladder for separating the two.
-  `Qwen3.5-9B` is the exception: a new tokenizer cut Indic fertility ~39% versus Qwen3.
-- **Telugu and Tamil are the expensive languages, not Punjabi.** Context truncation will bite
-  Dravidian first.
-- Sarvam is the most *uniform* across scripts (1.71× spread vs Llama's 4.98×), which is a cleaner
-  signal of multilingual intent than the headline mean.
-
----
-
-## 5. Datasets — corrections to the brief
-
-| Brief | Actual |
-|---|---|
-| `mistralai/Ministral-3-8B` / `-14B` | 404. Real: `mistralai/Ministral-3-{8B,14B}-Instruct-2512` |
-| CrossSum-IN "under `google/`" | `google/IndicGenBench_crosssum_in` — ungated, per-language JSON |
-| XL-Sum via parquet mirror | HF parquet auto-conversion **fails** on this repo. Use `hf_hub_download` on the per-language `.tar.bz2` and read the JSONL directly — no script, no `trust_remote_code`, no version pin |
-
-**CrossSum-IN is cross-lingual** (`crosssum_english-hi_test.json`: English doc → Indic summary),
-not monolingual like XL-Sum. It is a second task, not a held-out replication of the XL-Sum
-numbers — disagreement between them does not cleanly indicate contamination.
-
-**IndicXlit blocker:** `ai4bharat-transliteration` depends on `fairseq` (and `urduhack` →
-TensorFlow). `fairseq` does not build on Python 3.13, which is what every conda env here runs.
-This sits on the critical path for the romanized condition. Needs a dedicated py3.10 env or
-direct model invocation, and it is a day of work, not a `pip install`.
-
----
-
-## 6. Design decisions — settled 2026-08-11
-
-1. **Script-matched output.** Devanagari in → Devanagari out; same for Bengali, Gurmukhi, Tamil,
-   Telugu. Roman in → romanized out (Hinglish/Tanglish/…) where the model can manage it, English
-   accepted as fallback.
-   - *Consequence, accepted:* the roman condition scores in Latin space against a romanized gold
-     while the native condition scores in Brahmic space — different character inventories, so the
-     native→roman delta is not one clean number. **Mitigation:** score the roman condition *both*
-     ways — (a) Latin-space vs IndicXlit-romanized gold, (b) back-transliterated to native vs
-     native gold — so cross-condition comparison stays available.
-   - *"Is a romanized summary feasible" is a measured result, not an assumption.* Script-ID every
-     output (Unicode-range classifier, Bhasha-Abhijnaanam as reference) and report the rate at
-     which each model complies, silently falls back to English, or code-switches. Expect wide
-     variance: Hinglish and Tanglish are well-attested written practice; Punglish is barely
-     attested at all.
-2. **Output length capped in characters, not tokens** — a uniform `max_new_tokens` would give
-   high-fertility models fewer words of output and manufacture the fertility→quality correlation
-   the study exists to test. Per-model token ceiling scaled by measured fertility.
-   **Additionally: stratify inputs by article character length** (buckets, e.g. short / medium /
-   long) to test the fertility→context-budget interaction directly rather than assuming it.
-3. **No thinking mode** anywhere in the contestant set. Filed as a future extension.
-4. **Compute all metrics** — chrF/chrF++, ROUGE, BERTScore, LLM-judge — and select afterwards
-   rather than pre-committing.
-5. **Each dataset runs its own native task shape.** XL-Sum = monolingual (same language in, same
-   language out). CrossSum-IN = cross-lingual, as designed. CrossSum-IN is *not* forced into the
-   XL-Sum grid as a fourth column.
-6. **English prompts fixed across all cells**, isolating input script as the variable.
-7. **Judge: `gpt-oss-120b`, local, reference-based.**
-
-### Judge selection
-
-| Candidate | Fits GPU 4 | Indic fertility (hi/ta/te) | Overlap with contestants |
-|---|---|---|---|
-| **`gpt-oss-120b`** | **65 GB, MXFP4** ✅ | **1.1 / 2.0 / 2.3** | **none** |
-| `gpt-oss-20b` | 42 GB bf16 ✅ | same tokenizer | none |
-| `Qwen2.5-72B-Instruct-AWQ` | 39 GB ✅ | 4.0 / 7.5 / **12.4** ❌ | Qwen ⚠️ |
-| `Qwen2.5-32B-Instruct` | 62 GB ✅ | poor | Qwen ⚠️ |
-| `DeepSeek-R1-0528` | 642 GB ❌ | — | none |
-| `Llama-3.1-70B-Instruct` | **empty 84 KB stub** ❌ | — | Llama ⚠️ |
-
-`gpt-oss-120b` wins on all three axes: it fits with room for KV cache, its `o200k_harmony`
-tokenizer handles Indic script *better than most contestants* (Telugu 2.3 vs Qwen2.5-72B's 12.4),
-and there is **no OpenAI model in the contestant set**, so it is the only strong local judge with
-zero self-preference bias. Any Qwen or Llama judge would be scoring its own family.
-
-- **Reference-based judging** (judge sees the gold summary and compares) rather than reference-free.
-  METAL's warning about weak multilingual judges applies mainly to reference-free evaluation, where
-  the judge must independently assess Tamil fluency. Comparison against a gold is a much lower
-  competence bar and is what makes a non-Indic-specialised judge defensible.
-- **`gpt-oss-20b` as a second judge on a subsample** for inter-judge agreement. Agreement on rank
-  order means the judge is not the bottleneck; divergence is caught for ~5% of the compute.
-- Judge reasoning effort **medium** — item 3's "no thinking" governs contestants, not the judge.
-
-### ⚠️ TODO — Sarvam-M (deliberately deferred, do not silently drop)
-
-> **`sarvamai/sarvam-m` (23.6B, ~47 GB) is NOT downloaded and NOT in the run.**
-> Decision 2026-08-11: keep as an explicit TODO rather than fetch it now.
->
-> **Why it still matters:** Sarvam-M is built on Mistral Small, and
-> `Mistral-Small-3.2-24B-Instruct-2506` is already local. That pair is the only
-> near-controlled test available anywhere in this inventory of **what Indic-specific
-> post-training does to an identical backbone** — same architecture, same parameter
-> count, same band, one variable. Every other cross-family comparison in this study
-> confounds architecture, data, and tokenizer at once.
->
-> **Cost to add:** one ~47 GB download into `models/`, one registry entry in
-> `src/common.py`, one `generate.py` invocation. No new code.
->
-> **Caveat:** deprecated by Sarvam (they direct users to 30B/105B); weights remain
-> available and usable for research.
-
-## 6b. Inference pipeline — DONE (iteration 2)
-
-**One environment serves everything.** vLLM PR #33942 (native Sarvam MoE support) merged
-2026-03-07 and is in every release from 0.17.1. Running **vLLM 0.27.0 / torch 2.13 / py3.12**
-(conda env `msb`), `SarvamMoEForCausalLM`, `Qwen3_5ForConditionalGeneration` and
-`Mistral3ForConditionalGeneration` are all natively registered — no hotpatch, no vendor fork,
-no second env for the 0.15.0 pin.
-
-Verified on GPU 4: **Sarvam loads at 62.2 GB** with the explicit `dtype="bfloat16"` cast
-(fp32 would have been 128.6 GB and OOM'd), 27s load, and generates clean Devanagari.
-
-### Three traps that would have silently corrupted the main run
-
-1. **Sarvam reasons by default and ignores its own `<|nothink|>` marker.** With
-   `enable_thinking=False` correctly rendered — token id 28 verified present in the prompt — it
-   still emitted English `<think>` traces and hit the token cap on **20/20** items, producing zero
-   summaries. Fixed by prefilling the assistant turn with a closed `<think></think>` block, which
-   is the template's own convention for a non-reasoning turn. Left undetected, the flagship model
-   of this study would have produced 1800 empty cells.
-2. **vLLM's `chat_template_kwargs` never reached the template.** It is a valid parameter on
-   `LLM.chat()` and silently had no effect. We now render the chat template ourselves and pass
-   **token ids** rather than a string — control tokens only work if they carry their special-token
-   id, and re-tokenizing a rendered string turns them into literal characters.
-3. **The script classifier counted URLs as script evidence.** A legitimate Devanagari summary
-   containing `www.bbc.co.uk/hindi/...` classified as "mixed". Since script compliance is the
-   measured result in iteration 4, URLs/emails/handles are now stripped before profiling.
-
-### The character cap works
-
-Same character budget, deliberately different token ceilings:
-
-| Model | max_tokens (hi) | median output chars |
-|---|---|---|
-| `sarvam-30b` | 177 | 178 |
-| `Llama-3.1-8B-Instruct` | 312 | 141 |
-| *reference* | — | *134* |
-
-A 1.8× difference in token allowance yields comparable character output, and neither model hit
-the cap (`finish_reason=stop` throughout). The cap is a runaway guard, not a binding constraint —
-which is the whole point, since a uniform `max_tokens` would have handed Sarvam ~4x the effective
-output length of Llama on Telugu and manufactured the result.
-
-## 7. Reproducing
+Use Python 3.12 on Linux. GPU generation requires a compatible NVIDIA driver,
+vLLM and enough memory for the selected checkpoint. CPU preparation and analysis
+can be run separately. Model weights are not included.
 
 ```bash
-pip install transformers huggingface_hub mistral-common pandas tabulate
-python src/download_data.py     # XL-Sum (431 MB), CrossSum-IN, FLORES devtest
-python src/fertility.py         # tokenizer fertility, CPU only, no weights loaded
-python src/build_eval_set.py    # 1800-item length-stratified eval sample (seeded)
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+export MSB_MODELS_ROOT="$HOME/models"
 ```
 
-`MODELS` in `src/fertility.py` points at `/home/models`; edit those paths to run elsewhere.
+`requirements-pinned.txt` records the original inference-version choices;
+`requirements.txt` adds the preparation/scoring dependencies. Place checkpoint
+folders under `MSB_MODELS_ROOT` with the names listed in `src/common.py`.
+Obtain gated models and accept their terms separately.
 
-**Data is not redistributed in this repo.** XL-Sum and CrossSum-IN are **CC BY-NC-SA**
-(non-commercial research only), and vendoring them would push that NonCommercial + ShareAlike
-restriction onto everything here. The download script fetches them from source instead, and the
-eval sample is regenerated exactly from seed `20260811`.
+## Run a small experiment
 
-## 8. Environment
+```bash
+python src/download_data.py
+python src/build_eval_set.py
+python src/fertility.py
+CUDA_VISIBLE_DEVICES=0 python src/generate.py \
+  --model Llama-3.1-8B-Instruct --condition native --langs hi --limit 5
+python src/score.py --condition native
+```
 
-- `car` env: torch 2.13.0, transformers 5.14.1, datasets 5.0.1 — usable, no vLLM anywhere yet.
-- HF reachable via IITD proxy (`xen03.iitd.ac.in:3128`); token present, user `Vlack-Fangy`.
-- 2.4 TB free on `/home`, 1.6 TB on `/`.
+Use only GPUs allocated to you. Fertility scans available registered tokenizers;
+check its output before generation because token budgets depend on it.
+Download/preparation can be substantial even when generation uses five examples.
+Romanized experiments require the corresponding romanized inputs; do not assume
+native preparation creates every optional condition. See each command's `--help`.
+
+Additional exact-answer experiment:
+
+```bash
+python src/run_exact.py --task mmlu --model Llama-3.1-8B-Instruct \
+  --langs hi --scripts native --limit 5 --gpu 0
+```
+
+## Checks and outputs
+
+```bash
+python -m compileall -q src
+python -m unittest discover -s tests -v
+```
+
+New local data, generations, logs and results are ignored. Older aggregate
+reports already present in this repository are historical snapshots; they are
+not fresh validation of the current source. Full model experiments were not
+rerun for this packaging release.
+
+## Interpretation
+
+Character-based budgets reduce tokenizer-driven length differences, but do not
+remove architecture, training-data or decoding confounds. XL-Sum is monolingual;
+CrossSum-IN is cross-lingual. Compare them as distinct tasks. Model judges are
+fallible; judge agreement is not human validation. Report truncation and script
+compliance alongside quality scores.
+
+## Data and license
+
+Original code is MIT licensed. Datasets and models retain their own terms.
+XL-Sum and CrossSum-IN have non-commercial/share-alike restrictions; obtain them
+from their publishers. FLORES and other benchmark sources are referenced in the
+download scripts. No new corpora, checkpoint weights or raw predictions are
+included in this release. See `THIRD_PARTY_NOTICES.md`.

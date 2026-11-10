@@ -103,16 +103,27 @@ def build(task, row):
     return NUM_PROMPT.format(question=row["question"]), gold, 0
 
 
-def extract_letter(text, n_opts):
+def extract_letter(text, n_opts, truncated=False):
     """Answer letter: prefer the requested 'Answer: X' marker, else last bare letter.
 
     Parse failures are recorded as pred=None rather than silently scored wrong, so
     format-following and knowledge stay separable.
+
+    The bare-letter fallback is DISABLED when the generation was truncated. Measured
+    on gemma-4-26B-A4B-it/MMLU, truncated items scored 0.265 -- chance for a 4-option
+    question -- because the fallback returns whichever option the model happened to be
+    enumerating when it ran out of tokens. That manufactured a confident guess out of
+    an unfinished answer, and because truncation is script-asymmetric (23.4% native vs
+    35.4% romanised for that model) the invented answers landed disproportionately on
+    the romanised side and inflated the script gap. An unfinished answer is an
+    abstention, not a guess.
     """
     valid = set(LETTERS[:n_opts or 4])
     m = re.findall(r"(?:answer|उत्तर)\s*[:\-]?\s*\(?([A-Ha-h])\)?", text, re.IGNORECASE)
     if m and m[-1].upper() in valid:
         return m[-1].upper()
+    if truncated:
+        return None
     m = re.findall(r"\b([A-H])\b", text)
     for c in reversed(m):
         if c in valid:
@@ -120,10 +131,17 @@ def extract_letter(text, n_opts):
     return None
 
 
-def extract_num(text):
-    """Final numeric answer: prefer the requested #### marker, else last number."""
+def extract_num(text, truncated=False):
+    """Final numeric answer: prefer the requested #### marker, else last number.
+
+    Same abstention rule as extract_letter, and it matters more here: the last number
+    in a half-finished arithmetic trace is an intermediate value, which looks entirely
+    plausible and is silently scored as the model's answer.
+    """
     m = re.findall(r"####\s*\$?(-?[\d,]*\.?\d+)", text)
     if not m:
+        if truncated:
+            return None
         m = re.findall(r"(-?[\d,]*\.?\d+)", text)
     if not m:
         return None
@@ -140,6 +158,10 @@ def num_eq(a, b):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--task", required=True, choices=sorted(TASKS))
+    ap.add_argument("--mcq-tokens", type=int, default=768,
+                    help="MCQ generation ceiling (was 256; see Defect 26)")
+    ap.add_argument("--gen-tokens", type=int, default=1024,
+                    help="free-generation ceiling for gsm8k (was 512)")
     ap.add_argument("--model", required=True, choices=sorted(C.MODELS))
     ap.add_argument("--langs", nargs="+", default=["hi", "bn", "pa", "ta", "te", "en"])
     ap.add_argument("--scripts", nargs="+", default=["native", "roman"])
@@ -246,8 +268,14 @@ def main():
             # collapsed the model onto "A" 94% of the time against balanced gold --
             # it forces a choice out of a distribution the model never intended to
             # place there. Free generation + parse is also what Sarvam did.
+            # 256/512 was calibrated for a model that answers tersely. 2026 instruct
+            # models narrate first, and the old ceiling truncated 28.6% of
+            # gemma-4-26B-A4B-it's MMLU items -- which then scored at chance. Its
+            # FINISHED items averaged 185 tokens, so the ceiling was binding on
+            # ordinary behaviour, not on runaway generation.
             sp = SamplingParams(temperature=0.0, seed=0,
-                                max_tokens=(256 if kind == "mcq" else 512)
+                                max_tokens=(args.mcq_tokens if kind == "mcq"
+                                            else args.gen_tokens)
                                 * spec.get("gen_budget", 1))
 
             t1 = time.time()
@@ -257,7 +285,9 @@ def main():
             n_ok, n_unparsed, ttfts, e2es = 0, 0, [], []
             for r, o, g, nop in zip(rows, outs, golds, nopts):
                 text = o.outputs[0].text.strip()
-                pred = extract_letter(text, nop) if kind == "mcq" else extract_num(text)
+                cut = o.outputs[0].finish_reason == "length"
+                pred = (extract_letter(text, nop, cut) if kind == "mcq"
+                        else extract_num(text, cut))
                 ok = (pred == g) if kind == "mcq" else num_eq(pred, g)
                 n_ok += ok
                 if pred is None:
@@ -273,19 +303,31 @@ def main():
                         e2es.append(fi - at)
                 f_out.write(json.dumps({
                     "model": args.model, "family": spec["family"], "band": spec["band"],
-                    "task": args.task, "lang": lang, "script": script,
+                    # shots is written into the RECORD, not just the filename. The
+                    # k-shot ablation used to be distinguishable only by filename, so
+                    # any loader that globbed the directory pooled two experiments
+                    # into one accuracy (Defect 28).
+                    "task": args.task, "shots": args.shots,
+                    "lang": lang, "script": script,
                     "gold": g, "pred": pred, "correct": int(ok),
                     # Raw text kept so the pipeline can be audited by eye: accuracy
                     # alone cannot tell a correct answer from a lucky parse, nor
                     # spot a chat template rendering badly but not fatally.
-                    "gen": text[:1200],
+                    # FULL text, not a prefix. It was clipped at 1200 chars, which
+                    # silently broke offline auditing: `pred` is computed on the whole
+                    # generation, so an answer marker past char 1200 was invisible to
+                    # any re-score. OLMo was clipped on 96-99% of rows, making its
+                    # stored output unusable for exactly the truncation question we
+                    # needed it to answer. Long generations are the ones worth reading.
+                    "gen": text,
                     "gen_tokens": len(o.outputs[0].token_ids),
                     "finish_reason": o.outputs[0].finish_reason,
                 }, ensure_ascii=False) + "\n")
 
             acc = n_ok / max(1, len(golds))
             pct = lambda v, q: (sorted(v)[int(q * (len(v) - 1))] if v else None)
-            rec = {"model": args.model, "task": args.task, "lang": lang, "script": script,
+            rec = {"model": args.model, "task": args.task, "shots": args.shots,
+                   "lang": lang, "script": script,
                    "n": len(golds), "acc": round(acc, 4), "wall_s": round(wall, 1),
                    "ttft_med": pct(ttfts, .5), "e2e_med": pct(e2es, .5), "e2e_p95": pct(e2es, .95),
                    "unparsed": n_unparsed,

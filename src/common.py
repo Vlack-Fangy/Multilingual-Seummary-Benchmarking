@@ -1,4 +1,8 @@
 """Shared config: model registry, length budgets, script identification, prompts."""
+
+import os
+from pathlib import Path
+MODELS_ROOT = Path(os.environ.get("MSB_MODELS_ROOT", "./models")).expanduser()
 import csv
 import re
 import unicodedata
@@ -38,7 +42,7 @@ NO_THINK = {"chat_template_kwargs": {"enable_thinking": False}}
 # (key, path, family, band, extra vllm kwargs)
 MODELS = {
     "sarvam-30b": dict(
-        path="/home/models/sarvam-30b", family="Sarvam", band="21-30B",
+        path=str(MODELS_ROOT / 'sarvam-30b'), family="Sarvam", band="21-30B",
         # Stored fp32 (128.6GB) with torch_dtype unset: dtype="auto" would eat the
         # card and leave no room for KV cache. Must be cast explicitly.
         vllm=dict(dtype="bfloat16", trust_remote_code=True),
@@ -49,49 +53,49 @@ MODELS = {
         # the template's own convention for a non-reasoning assistant turn.
         chat_kwargs=NO_THINK, prefill=["<think>", "</think>"]),
     "Qwen3-30B-A3B": dict(
-        path="/home/models/Qwen3-30B-A3B-Instruct-2507", family="Qwen", band="21-30B",
+        path=str(MODELS_ROOT / 'Qwen3-30B-A3B-Instruct-2507'), family="Qwen", band="21-30B",
         vllm=dict(dtype="bfloat16"), chat_kwargs=NO_THINK),
     "Mistral-Small-3.2-24B": dict(
-        path="/home/models/Mistral-Small-3.2-24B-Instruct-2506", family="Mistral", band="21-30B",
+        path=str(MODELS_ROOT / 'Mistral-Small-3.2-24B-Instruct-2506'), family="Mistral", band="21-30B",
         # Ships tekken.json and no HF tokenizer.
         vllm=dict(dtype="bfloat16", tokenizer_mode="mistral", config_format="mistral",
                   load_format="mistral")),
     "Qwen3-32B": dict(
-        path="/home/models/Qwen3-32B", family="Qwen", band="21-30B",
+        path=str(MODELS_ROOT / 'Qwen3-32B'), family="Qwen", band="21-30B",
         vllm=dict(dtype="bfloat16"), chat_kwargs=NO_THINK),
     "gemma-2-27b-it": dict(
-        path="/home/models/gemma-2-27b-it", family="Gemma", band="21-30B",
+        path=str(MODELS_ROOT / 'gemma-2-27b-it'), family="Gemma", band="21-30B",
         vllm=dict(dtype="bfloat16")),
     "Qwen3-14B-Instruct": dict(
-        path="/home/models/Qwen3-14B-Instruct", family="Qwen", band="13-20B",
+        path=str(MODELS_ROOT / 'Qwen3-14B-Instruct'), family="Qwen", band="13-20B",
         vllm=dict(dtype="bfloat16"), chat_kwargs=NO_THINK),
     "Qwen3.5-9B": dict(
-        path="/home/models/Qwen3.5-9B", family="Qwen", band="7-12B",
+        path=str(MODELS_ROOT / 'Qwen3.5-9B'), family="Qwen", band="7-12B",
         vllm=dict(dtype="bfloat16"), chat_kwargs=NO_THINK),
     "Qwen3-8B": dict(
-        path="/home/models/Qwen3-8B", family="Qwen", band="7-12B",
+        path=str(MODELS_ROOT / 'Qwen3-8B'), family="Qwen", band="7-12B",
         vllm=dict(dtype="bfloat16"), chat_kwargs=NO_THINK),
     "Llama-3.1-8B-Instruct": dict(
-        path="/home/models/Llama-3.1-8B-Instruct", family="Llama", band="7-12B",
+        path=str(MODELS_ROOT / 'Llama-3.1-8B-Instruct'), family="Llama", band="7-12B",
         vllm=dict(dtype="bfloat16")),
     "Mistral-7B-Instr-v0.3": dict(
-        path="/home/models/Mistral-7B-Instruct-v0.3", family="Mistral", band="7-12B",
+        path=str(MODELS_ROOT / 'Mistral-7B-Instruct-v0.3'), family="Mistral", band="7-12B",
         vllm=dict(dtype="bfloat16")),
 
     # ---- phase 2 additions ----
     # Gemma 4 has configurable thinking; NO_THINK is passed defensively because an
     # unnoticed thinking mode is what made Sarvam emit <think> on 20/20 items.
     "gemma-4-12B-it": dict(
-        path="/home/models/gemma-4-12B-it", family="Gemma", band="7-12B",
+        path=str(MODELS_ROOT / 'gemma-4-12B-it'), family="Gemma", band="7-12B",
         vllm=dict(dtype="bfloat16"), chat_kwargs=NO_THINK),
     "gemma-4-26B-A4B-it": dict(
-        path="/home/models/gemma-4-26B-A4B-it", family="Gemma", band="21-32B",
+        path=str(MODELS_ROOT / 'gemma-4-26B-A4B-it'), family="Gemma", band="21-32B",
         vllm=dict(dtype="bfloat16"), chat_kwargs=NO_THINK),
     "gemma-4-31B-it": dict(
-        path="/home/models/gemma-4-31B-it", family="Gemma", band="21-32B",
+        path=str(MODELS_ROOT / 'gemma-4-31B-it'), family="Gemma", band="21-32B",
         vllm=dict(dtype="bfloat16"), chat_kwargs=NO_THINK),
     "gemma-3-27b-it": dict(
-        path="/home/models/gemma-3-27b-it", family="Gemma", band="21-32B",
+        path=str(MODELS_ROOT / 'gemma-3-27b-it'), family="Gemma", band="21-32B",
         vllm=dict(dtype="bfloat16")),
     # BF16 repos: the default Ministral-3 releases are natively FP8, which would
     # confound the Mistral arm against an otherwise bf16 field.
@@ -101,19 +105,19 @@ MODELS = {
     # multimodal) and dies on `[IMG]`. Mistral tokenizer+config bypasses the image
     # processor, while the DEFAULT weight loader reads the shards we actually have.
     "Ministral-3-8B": dict(
-        path="/home/models/Ministral-3-8B-Instruct-2512-BF16", family="Mistral", band="7-12B",
+        path=str(MODELS_ROOT / 'Ministral-3-8B-Instruct-2512-BF16'), family="Mistral", band="7-12B",
         vllm=dict(dtype="bfloat16", tokenizer_mode="mistral", config_format="mistral")),
     "Ministral-3-14B": dict(
-        path="/home/models/Ministral-3-14B-Instruct-2512-BF16", family="Mistral", band="13-20B",
+        path=str(MODELS_ROOT / 'Ministral-3-14B-Instruct-2512-BF16'), family="Mistral", band="13-20B",
         vllm=dict(dtype="bfloat16", tokenizer_mode="mistral", config_format="mistral")),
     "sarvam-m": dict(
-        path="/home/models/sarvam-m", family="Sarvam", band="21-32B",
+        path=str(MODELS_ROOT / 'sarvam-m'), family="Sarvam", band="21-32B",
         vllm=dict(dtype="bfloat16"), chat_kwargs=NO_THINK),
     "aya-expanse-8b": dict(
-        path="/home/models/aya-expanse-8b", family="Cohere", band="7-12B",
+        path=str(MODELS_ROOT / 'aya-expanse-8b'), family="Cohere", band="7-12B",
         vllm=dict(dtype="bfloat16")),
     "aya-expanse-32b": dict(
-        path="/home/models/aya-expanse-32b", family="Cohere", band="21-32B",
+        path=str(MODELS_ROOT / 'aya-expanse-32b'), family="Cohere", band="21-32B",
         vllm=dict(dtype="bfloat16")),
     # OLMo-3.1-*-Think hard-codes an OPEN <think> tag into the generation prompt
     # ("<|im_start|>assistant\n<think>") with no toggle, so every reply begins
@@ -122,7 +126,7 @@ MODELS = {
     # ability. gen_budget widens the cap. thinking_only marks it for reporting as a
     # labelled separate entry: it cannot sit in a ranking of non-thinking models.
     "OLMo-3.1-32B-Think": dict(
-        path="/home/models/OLMo-3.1-32B-Think", family="AI2", band="21-32B",
+        path=str(MODELS_ROOT / 'OLMo-3.1-32B-Think'), family="AI2", band="21-32B",
         vllm=dict(dtype="bfloat16"), gen_budget=6, thinking_only=True),
     # BharatGen Param2: 17B total / 2.4B active MoE — the same active budget as
     # sarvam-30b, from a different organisation. A third independent Indic-first
@@ -132,13 +136,55 @@ MODELS = {
     # on — report it as a labelled separate entry, not inside the ranking;
     # (b) 4096 context, so T1/T2 only — it cannot take T5's 10k-char articles.
     "Param2-17B-A2.4B": dict(
-        path="/home/models/Param2-17B-A2.4B-Thinking", family="BharatGen", band="13-20B",
+        path=str(MODELS_ROOT / 'Param2-17B-A2.4B-Thinking'), family="BharatGen", band="13-20B",
         vllm=dict(dtype="bfloat16", trust_remote_code=True),
         gen_budget=6, thinking_only=True),
     "bloomz-7b1": dict(
-        path="/home/models/bloomz-7b1", family="BigScience", band="7-12B",
+        path=str(MODELS_ROOT / 'bloomz-7b1'), family="BigScience", band="7-12B",
         vllm=dict(dtype="bfloat16")),
 }
+
+
+# ---------------------------------------------------------------- roster
+# The reporting set, fixed 2026-08-17. Chosen for CAPABILITY, not for tracing how
+# families improved over time -- that question was answered and retired, and the
+# generational models were costing a third of the compute to re-establish that
+# 2026 models beat 2024 ones.
+#
+# Every slot is either a top performer or a control that licenses a specific claim:
+#
+#   gemma-4-31B-it          strongest overall (0.951 GSM8K, smallest gaps)
+#   gemma-4-12B-it          size control within Gemma 4
+#   gemma-4-26B-A4B-it      dense-vs-MoE control within Gemma 4
+#   sarvam-m                best Indic robustness at strength
+#   Mistral-Small-3.2-24B   MANDATORY: same backbone AND byte-identical tokenizer
+#                           as sarvam-m. This pair is the central claim -- it holds
+#                           tokenization exactly constant while the gap moves.
+#   sarvam-30b              Indic-first flagship; the tokenizer-swap finding
+#   Param2-17B-A2.4B        independent Indic-first counter-example (large GSM8K gap
+#                           despite Indic-first training)
+#   Qwen3-14B-Instruct      outside anchor; 98.5% completion, beats Qwen3-30B-A3B on
+#                           accuracy and completion both
+#
+# Dropping to one Qwen loses the byte-identical-tokenizer control that originally
+# licensed the fertility conclusion -- but sarvam-m vs Mistral-Small is a strictly
+# better version of that control, so it is redundant rather than lost.
+ROSTER = [
+    "gemma-4-31B-it", "gemma-4-12B-it", "gemma-4-26B-A4B-it",
+    "sarvam-m", "Mistral-Small-3.2-24B", "sarvam-30b",
+    "Param2-17B-A2.4B", "Qwen3-14B-Instruct",
+]
+
+# Retired. Their data stays on disk as generational reference, but they are out of
+# all reporting. Note OLMo is retired on a data-quality ground, not a capability
+# one: 96-99% of its stored generations were clipped (Defect 27), so its numbers
+# were never established in the first place.
+RETIRED = [
+    "gemma-2-27b-it", "gemma-3-27b-it", "Mistral-7B-Instr-v0.3",
+    "Qwen3-8B", "Qwen3-32B", "Qwen3.5-9B", "Qwen3-30B-A3B",
+    "Llama-3.1-8B-Instruct", "Ministral-3-8B", "Ministral-3-14B",
+    "OLMo-3.1-32B-Think", "bloomz-7b1", "aya-expanse-8b", "aya-expanse-32b",
+]
 
 
 # Cap context at 32k: enough for the longest article in the eval set even at the
@@ -174,6 +220,23 @@ def load_tok_per_char():
         for r in csv.DictReader(f):
             out.setdefault(r["model"], {})[r["lang"]] = float(r["tok_per_char"])
     return out
+
+
+def indic_tok_per_word(model_key, default=2.5):
+    """Mean tokens per word across the five Indic languages, from the T6 measurement.
+
+    Used to convert a WORD budget into a token budget per model. A fixed token budget
+    silently gives a high-fertility tokenizer a fraction of the room a low-fertility
+    one gets -- 249 words vs 1089 at the same 2048 tokens -- which biases any
+    comparison of what models produce (Defect 31).
+    """
+    try:
+        with FERTILITY_CSV.open() as f:
+            vals = [float(r["tok_per_word"]) for r in csv.DictReader(f)
+                    if r["model"] == model_key and r["lang"] in ("hi", "bn", "pa", "ta", "te")]
+        return sum(vals) / len(vals) if vals else default
+    except Exception:
+        return default
 
 
 def max_tokens_for(model_key, lang, tpc=None):

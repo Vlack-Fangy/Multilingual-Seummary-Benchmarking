@@ -24,6 +24,10 @@ Design:
   python src/judge.py --condition native
   python src/judge.py --condition native --judge gpt-oss-20b --sample 0.05
 """
+
+import os
+from pathlib import Path
+MODELS_ROOT = Path(os.environ.get("MSB_MODELS_ROOT", "./models")).expanduser()
 import argparse
 import json
 import os
@@ -51,8 +55,8 @@ GEN = ROOT / "results" / "generations"
 OUT = ROOT / "results" / "judge"
 
 JUDGES = {
-    "gpt-oss-120b": "/home/models/gpt-oss-120b",
-    "gpt-oss-20b": "/home/models/gpt-oss-20b",
+    "gpt-oss-120b": str(MODELS_ROOT / 'gpt-oss-120b'),
+    "gpt-oss-20b": str(MODELS_ROOT / 'gpt-oss-20b'),
 }
 
 SCHEMA = {

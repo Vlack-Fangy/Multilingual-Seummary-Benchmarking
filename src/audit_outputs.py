@@ -83,15 +83,14 @@ def main():
 
     if args.show:
         for p in sorted(EX.glob(f"{args.show}__*.jsonl")):
-            # Tolerate a half-written final line: these files are read while runs append.
-    rows = []
-    for l in p.read_text(encoding="utf-8", errors="replace").splitlines():
-        if not l.strip():
-            continue
-        try:
-            rows.append(json.loads(l))
-        except json.JSONDecodeError:
-            continue
+            rows = []
+            for line in p.read_text(encoding="utf-8", errors="replace").splitlines():
+                if not line.strip():
+                    continue
+                try:
+                    rows.append(json.loads(line))
+                except json.JSONDecodeError:
+                    continue
             rows = [r for r in rows if "gen" in r]
             for key in sorted({(r["lang"], r["script"]) for r in rows}):
                 sub = [r for r in rows if (r["lang"], r["script"]) == key][: args.n]

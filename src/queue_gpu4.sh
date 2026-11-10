@@ -9,7 +9,7 @@ cd "$(dirname "$0")/.."
 GPU=4
 
 wait_for() {   # wait_for <dir> <expected_GB>
-  local d="/home/models/$1" exp="$2" need have
+  local d="${MSB_MODELS_ROOT:-./models}/$1" exp="$2" need have
   need=$(echo "$exp*0.99*1000000000/1" | bc)
   for _ in $(seq 1 240); do          # up to ~2h
     # Size of the weight files only. Do NOT require an index: single-shard models
